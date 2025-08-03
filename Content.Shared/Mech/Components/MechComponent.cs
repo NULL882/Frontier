@@ -22,6 +22,13 @@ public sealed partial class MechComponent : Component
     public bool BreakOnEmag = true;
 
     /// <summary>
+    /// Corvax-Forge: is the mech internals enabled?
+    /// </summary>
+    [DataField("internals")]
+    [AutoNetworkedField]
+    public bool Internals = false;
+
+    /// <summary>
     /// How much "health" the mech has left.
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
@@ -55,6 +62,15 @@ public sealed partial class MechComponent : Component
 
     [ViewVariables]
     public readonly string BatterySlotId = "mech-battery-slot";
+
+    /// <summary>
+    /// Corvax-Forge: The slot the gas tank is stored in.
+    /// </summary>
+    [ViewVariables]
+    public ContainerSlot GasTankSlot = default!;
+
+    [ViewVariables]
+    public readonly string GasTankSlotId = "mech-gas-tank-slot";
 
     /// <summary>
     /// A multiplier used to calculate how much of the damage done to a mech
@@ -152,6 +168,8 @@ public sealed partial class MechComponent : Component
     public EntProtoId MechUiAction = "ActionMechOpenUI";
     [DataField]
     public EntProtoId MechEjectAction = "ActionMechEject";
+    [DataField]
+    public EntProtoId MechToggleInternalsAction = "ActionMechToggleInternals";
     #endregion
 
     #region Visualizer States
@@ -187,6 +205,8 @@ public sealed partial class MechComponent : Component
     [DataField] public EntityUid? MechCycleActionEntity;
     [DataField] public EntityUid? MechUiActionEntity;
     [DataField] public EntityUid? MechEjectActionEntity;
+    [DataField] public EntityUid? MechToggleInternalsActionEntity; // Corvax-Forge
+    [DataField] public EntityUid? MechToggleSirenActionEntity; // Corvax-Forge
 
     // Frontier: extra fields
     /// <summary>

@@ -1,14 +1,21 @@
 using System.Linq;
+using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
+using Content.Server.Atmos.Piping.Components; // Corvax-Forge
+using Content.Server.Body.Systems; // Corvax-Forge
+using Content.Server.Hands.Systems; // Corvax-Forge
 using Content.Server.Emp; // Corvax-Forge
 using Content.Server.Mech.Components;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Actions; // Frontier
+using Content.Shared.Atmos; // Corvax-Forge
+using Content.Shared.Atmos.Components; // Corvax-Forge
 using Content.Shared.Damage;
 using Content.Shared.DoAfter;
 using Content.Shared.FixedPoint;
+using Content.Shared.Hands.Components; // Corvax-Forge
 using Content.Shared.Interaction;
 using Content.Shared.Toggleable; // Frontier
 using Content.Shared.Mech;
@@ -16,6 +23,7 @@ using Content.Shared.Mech.Components;
 using Content.Shared.Mech.EntitySystems;
 using Content.Shared.Movement.Events;
 using Content.Shared.Popups;
+using Content.Shared.Tag;
 using Content.Shared.Tools.Components;
 using Content.Shared.Verbs;
 using Content.Shared.Wires;
@@ -26,6 +34,7 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems; // Frontier
 using Robust.Shared.GameObjects; // Frontier
 using Robust.Shared.Containers;
+using Robust.Shared.Timing; // Corvax-Forge
 using Robust.Shared.Player;
 using Content.Shared.Whitelist;
 using Content.Shared.Mobs.Components; // Frontier
@@ -38,6 +47,7 @@ namespace Content.Server.Mech.Systems;
 /// <inheritdoc/>
 public sealed partial class MechSystem : SharedMechSystem
 {
+    [Dependency] private readonly TagSystem _tag = default!; // Corvax-Forge
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
     [Dependency] private readonly SharedAudioSystem _audioSystem = default!; // Corvax-Forge
@@ -51,6 +61,7 @@ public sealed partial class MechSystem : SharedMechSystem
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly SharedToolSystem _toolSystem = default!;
     [Dependency] private readonly NpcFactionSystem _npcFaction = default!; // Frontier
+    [Dependency] private readonly GasTankSystem _gasTank = default!; // Corvax-Forge
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -63,6 +74,7 @@ public sealed partial class MechSystem : SharedMechSystem
         SubscribeLocalEvent<MechComponent, GetVerbsEvent<AlternativeVerb>>(OnAlternativeVerb);
         SubscribeLocalEvent<MechComponent, MechOpenUiEvent>(OnOpenUi);
         SubscribeLocalEvent<MechComponent, RemoveBatteryEvent>(OnRemoveBattery);
+        SubscribeLocalEvent<MechComponent, RemoveGasTankEvent>(OnRemoveGasTank); // Corvax-Forge
         SubscribeLocalEvent<MechComponent, MechEntryEvent>(OnMechEntry);
         SubscribeLocalEvent<MechComponent, MechExitEvent>(OnMechExit);
         SubscribeLocalEvent<MechComponent, EmpPulseEvent>(OnEmpPulse); // Corvax-Forge
@@ -77,6 +89,7 @@ public sealed partial class MechSystem : SharedMechSystem
         SubscribeLocalEvent<MechPilotComponent, InhaleLocationEvent>(OnInhale);
         SubscribeLocalEvent<MechPilotComponent, ExhaleLocationEvent>(OnExhale);
         SubscribeLocalEvent<MechPilotComponent, AtmosExposedGetAirEvent>(OnExpose);
+        SubscribeLocalEvent<MechAirComponent, AtmosDeviceUpdateEvent>(OnAirUpdate); // Corvax-Forge
 
         SubscribeLocalEvent<MechAirComponent, GetFilterAirEvent>(OnGetFilterAir);
 
@@ -104,15 +117,34 @@ public sealed partial class MechSystem : SharedMechSystem
             return;
         }
 
+        if (component.GasTankSlot.ContainedEntity == null && _tag.HasTag(args.Used, "MechAirTank"))
+        {
+            _actionBlocker.UpdateCanMove(uid);
+            return;
+        }
+
         if (_toolSystem.HasQuality(args.Used, "Prying") && component.BatterySlot.ContainedEntity != null)
         {
-            var doAfterEventArgs = new DoAfterArgs(EntityManager, args.User, component.BatteryRemovalDelay,
-                new RemoveBatteryEvent(), uid, target: uid, used: args.Target)
+            if (component.BatterySlot.ContainedEntity != null)
             {
-                BreakOnMove = true
-            };
+                var doAfterEventArgs = new DoAfterArgs(EntityManager, args.User, component.BatteryRemovalDelay,
+                    new RemoveBatteryEvent(), uid, target: uid, used: args.Target)
+                {
+                    BreakOnMove = true
+                };
 
-            _doAfter.TryStartDoAfter(doAfterEventArgs);
+                _doAfter.TryStartDoAfter(doAfterEventArgs);
+            }
+            else if (component.GasTankSlot.ContainedEntity != null)
+            {
+                var doAfterEventArgs = new DoAfterArgs(EntityManager, args.User, component.BatteryRemovalDelay,
+                    new RemoveGasTankEvent(), uid, target: uid, used: args.Target)
+                {
+                    BreakOnMove = true
+                };
+
+                _doAfter.TryStartDoAfter(doAfterEventArgs);
+            }
         }
     }
 
@@ -136,6 +168,16 @@ public sealed partial class MechSystem : SharedMechSystem
         RemoveBattery(uid, component);
         _actionBlocker.UpdateCanMove(uid);
 
+        args.Handled = true;
+    }
+
+    private void OnRemoveGasTank(EntityUid uid, MechComponent component, RemoveGasTankEvent args)
+    {
+        if (args.Cancelled || args.Handled)
+            return;
+        
+        _container.EmptyContainer(component.GasTankSlot);
+        
         args.Handled = true;
     }
 
@@ -480,6 +522,15 @@ public sealed partial class MechSystem : SharedMechSystem
 
         args.Gas =  _atmosphere.GetContainingMixture(component.Mech, excite: args.Excite);
         args.Handled = true;
+    }
+
+    private void OnAirUpdate(EntityUid uid, MechAirComponent comp, ref AtmosDeviceUpdateEvent args)
+    {
+        if (!TryComp<MechComponent>(uid, out var mech) || !mech.Airtight || mech.GasTankSlot.ContainedEntity == null || !mech.Internals)
+            return;
+        
+        var gasTank = Comp<GasTankComponent>(mech.GasTankSlot.ContainedEntity.Value);
+        _atmosphere.PumpGasTo(gasTank.Air, comp.Air, 70);
     }
 
     private void OnGetFilterAir(EntityUid uid, MechAirComponent comp, ref GetFilterAirEvent args)

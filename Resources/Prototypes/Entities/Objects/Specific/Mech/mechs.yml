@@ -205,12 +205,14 @@
 - type: entity
   parent: MechHonker
   id: MechHonkerBattery
-  suffix: Battery
+  suffix: Battery, Air # Corvax-Forge: +Air
   components:
   - type: ContainerFill
     containers:
       mech-battery-slot:
       - PowerCellHigh
+      mech-gas-tank-slot: # Corvax-Forge
+      - MechAirTankFilled
 
 # HAMTR
 - type: entity

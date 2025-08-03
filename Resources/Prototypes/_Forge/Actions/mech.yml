@@ -13,3 +13,19 @@
       state: mech_lights_on
     event: !type:ToggleActionEvent
     useDelay: 1
+
+- type: entity
+  id: ActionMechToggleInternals
+  name: Toggle Internals
+  description: Start ventilating the interior from the gas tank.
+  components:
+  - type: InstantAction
+    itemIconStyle: NoItem
+    icon:
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_internals_off
+    iconOn:
+      sprite: Interface/Actions/actions_mecha.rsi
+      state: mech_internals_on
+    event: !type:MechToggleInternalsEvent
+    useDelay: 1
