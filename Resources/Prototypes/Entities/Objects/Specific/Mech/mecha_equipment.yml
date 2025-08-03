@@ -12,6 +12,9 @@
   - type: GuideHelp
     guides:
     - Robotics
+  - type: ClothingSpeedModifier # Corvax-Forge
+    walkModifier: 0.25
+    sprintModifier: 0.25
 
 - type: entity
   id: MechEquipmentGrabber

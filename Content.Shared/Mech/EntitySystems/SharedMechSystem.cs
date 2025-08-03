@@ -1,24 +1,31 @@
 using System.Linq;
+using Content.Shared._Forge.ForgeVars;
+using Content.Shared._Forge.Mech; // Corvax-Forge
 using Content.Shared.Access.Components;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Actions;
 using Content.Shared.Destructible;
 using Content.Shared.DoAfter;
 using Content.Shared.DragDrop;
-using Content.Shared.Emag.Components; // Corvax-Forge
 using Content.Shared.Emag.Systems; // Corvax-Forge
 using Content.Shared.FixedPoint;
+using Content.Shared.Hands.Components; // Corvax-Forge
+using Content.Shared.Hands.EntitySystems; // Corvax-Forge
+using Content.Shared.Implants.Components; // Corvax-Forge
+using Content.Shared.Inventory.VirtualItem; // Corvax-Forge
 using Content.Shared.Interaction;
 using Content.Shared.Interaction.Components;
 using Content.Shared.Interaction.Events;
 using Content.Shared.Mech.Components;
 using Content.Shared.Mech.Equipment.Components;
+using Content.Shared.Mech.Events; // Corvax-Forge
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Weapons.Ranged.Events; // Corvax-Forge
 using Content.Shared.Whitelist;
+using Robust.Shared.Configuration;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
@@ -45,6 +52,12 @@ public abstract class SharedMechSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
+    [Dependency] private readonly SharedHandsSystem _hands = default!; // Corvax-Forge
+    [Dependency] private readonly SharedVirtualItemSystem _virtualItem = default!; // Corvax-Forge
+    [Dependency] private readonly IConfigurationManager _config = default!; // Corvax-Forge
+
+    // Corvax-Forge: Local variable for checking if mech guns can be used out of them.
+    private bool _canUseMechGunOutside;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -62,6 +75,15 @@ public abstract class SharedMechSystem : EntitySystem
         SubscribeLocalEvent<MechPilotComponent, GetMeleeWeaponEvent>(OnGetMeleeWeapon);
         SubscribeLocalEvent<MechPilotComponent, CanAttackFromContainerEvent>(OnCanAttackFromContainer);
         SubscribeLocalEvent<MechPilotComponent, AttackAttemptEvent>(OnAttackAttempt);
+        SubscribeLocalEvent<MechPilotComponent, EntGotRemovedFromContainerMessage>(OnEntGotRemovedFromContainer);
+        SubscribeLocalEvent<MechEquipmentComponent, ShotAttemptedEvent>(OnShotAttempted); // Corvax-Forge
+        Subs.CVar(_config, ForgeVars.MechGunOutsideMech, value => _canUseMechGunOutside = value, true); // Corvax-Forge
+    }
+
+    // Corvax-Forge: Fixes scram implants or teleports locking the pilot out of being able to move.
+    private void OnEntGotRemovedFromContainer(EntityUid uid, MechPilotComponent component, EntGotRemovedFromContainerMessage args)
+    {
+        TryEject(component.Mech, pilot: uid);
     }
 
     private void OnToggleEquipmentAction(EntityUid uid, MechComponent component, MechToggleEquipmentEvent args)
@@ -394,6 +416,12 @@ public abstract class SharedMechSystem : EntitySystem
         SetupUser(uid, toInsert.Value);
         _container.Insert(toInsert.Value, component.PilotSlot);
         UpdateAppearance(uid, component);
+        // <Corvax-Forge>
+        UpdateHands(toInsert.Value, uid, true);
+
+        var ev = new MechInsertedEvent(uid);
+        RaiseLocalEvent(toInsert.Value, ev);
+        // </Corvax-Forge>
         return true;
     }
 
@@ -402,20 +430,28 @@ public abstract class SharedMechSystem : EntitySystem
     /// </summary>
     /// <param name="uid"></param>
     /// <param name="component"></param>
+    /// <param name="pilot">The pilot to eject</param>
     /// <returns>Whether or not the pilot was ejected.</returns>
-    public bool TryEject(EntityUid uid, MechComponent? component = null)
+    public bool TryEject(EntityUid uid, MechComponent? component = null, EntityUid? pilot = null) // Corvax-Forge edit
     {
         if (!Resolve(uid, ref component))
             return false;
 
-        if (component.PilotSlot.ContainedEntity == null)
+        if (component.PilotSlot.ContainedEntity != null) // Corvax-Forge edit
+            pilot = component.PilotSlot.ContainedEntity.Value;
+
+        if (pilot == null) // Corvax-Forge edit
             return false;
 
-        var pilot = component.PilotSlot.ContainedEntity.Value;
-
-        RemoveUser(uid, pilot);
-        _container.RemoveEntity(uid, pilot);
+        RemoveUser(uid, pilot.Value); // Corvax-Forge edit
+        _container.RemoveEntity(uid, pilot.Value); // Corvax-Forge edit
         UpdateAppearance(uid, component);
+        // <Corvax-Forge>
+        UpdateHands(pilot.Value, uid, false);
+
+        var ev = new MechEjectedEvent(uid);
+        RaiseLocalEvent(pilot.Value, ev);
+        // </Corvax-Forge>
 
         // Frontier - Make NPC AI attack Mechs
         if (TryComp<MobStateComponent>(uid, out var _))
@@ -426,6 +462,52 @@ public abstract class SharedMechSystem : EntitySystem
 
         return true;
     }
+
+    // Corvax-Forge Change Start
+    private void UpdateHands(EntityUid uid, EntityUid mech, bool active)
+    {
+        if (!TryComp<HandsComponent>(uid, out var handsComponent))
+            return;
+
+        if (active)
+            BlockHands(uid, mech, handsComponent);
+        else
+            FreeHands(uid, mech);
+    }
+
+    private void BlockHands(EntityUid uid, EntityUid mech, HandsComponent handsComponent)
+    {
+        var freeHands = 0;
+        foreach (var hand in _hands.EnumerateHands(uid, handsComponent))
+        {
+            if (hand.HeldEntity == null)
+            {
+                freeHands++;
+                continue;
+            }
+
+            // Is this entity removable? (they might have handcuffs on)
+            if (HasComp<UnremoveableComponent>(hand.HeldEntity) && hand.HeldEntity != mech)
+                continue;
+
+            _hands.DoDrop(uid, hand, true, handsComponent);
+            freeHands++;
+            if (freeHands == 2)
+                break;
+        }
+        if (_virtualItem.TrySpawnVirtualItemInHand(mech, uid, out var virtItem1))
+            EnsureComp<UnremoveableComponent>(virtItem1.Value);
+
+        if (_virtualItem.TrySpawnVirtualItemInHand(mech, uid, out var virtItem2))
+            EnsureComp<UnremoveableComponent>(virtItem2.Value);
+    }
+
+    private void FreeHands(EntityUid uid, EntityUid mech)
+    {
+        _virtualItem.DeleteInHandsMatching(uid, mech);
+    }
+
+    // Corvax-Forge Change End
 
     private void OnGetMeleeWeapon(EntityUid uid, MechPilotComponent component, GetMeleeWeaponEvent args)
     {
@@ -449,6 +531,21 @@ public abstract class SharedMechSystem : EntitySystem
     {
         if (args.Target == component.Mech)
             args.Cancel();
+    }
+
+    // Corvax-Forge: Prevent guns being used out of mechs if CCVAR is set.
+    private void OnShotAttempted(EntityUid uid, MechEquipmentComponent component, ref ShotAttemptedEvent args)
+    {
+        if (!component.EquipmentOwner.HasValue
+            || !HasComp<MechComponent>(component.EquipmentOwner.Value))
+        {
+            if (!_canUseMechGunOutside)
+                args.Cancel();
+            return;
+        }
+
+        var ev = new HandleMechEquipmentBatteryEvent();
+        RaiseLocalEvent(uid, ev);
     }
 
     private void UpdateAppearance(EntityUid uid, MechComponent? component = null,
@@ -531,5 +628,14 @@ public sealed partial class MechExitEvent : SimpleDoAfterEvent
 /// </summary>
 [Serializable, NetSerializable]
 public sealed partial class MechEntryEvent : SimpleDoAfterEvent
+{
+}
+
+/// <summary>
+///     Corvax-Forge: Event raised when an user attempts to fire a mech weapon to check if its battery is drained
+/// </summary>
+
+[Serializable, NetSerializable]
+public sealed partial class HandleMechEquipmentBatteryEvent : EntityEventArgs
 {
 }

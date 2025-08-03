@@ -10,6 +10,6 @@
     size: Ginormous
   - type: MultiHandedItem
   - type: ClothingSpeedModifier
-    walkModifier: 0.5
-    sprintModifier: 0.5
+    walkModifier: 0.25
+    sprintModifier: 0.25
   - type: HeldSpeedModifier

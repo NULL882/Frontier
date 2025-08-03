@@ -1,13 +1,16 @@
 using System.Linq;
 using Content.Server.Atmos.EntitySystems;
+using Content.Server.Emp; // Corvax-Forge
 using Content.Server.Mech.Components;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Shared.ActionBlocker;
+using Content.Shared.Actions; // Frontier
 using Content.Shared.Damage;
 using Content.Shared.DoAfter;
 using Content.Shared.FixedPoint;
 using Content.Shared.Interaction;
+using Content.Shared.Toggleable; // Frontier
 using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
 using Content.Shared.Mech.EntitySystems;
@@ -20,6 +23,8 @@ using Content.Server.Body.Systems;
 using Content.Shared.Tools.Systems;
 using Robust.Server.Containers;
 using Robust.Server.GameObjects;
+using Robust.Shared.Audio.Systems; // Frontier
+using Robust.Shared.GameObjects; // Frontier
 using Robust.Shared.Containers;
 using Robust.Shared.Player;
 using Content.Shared.Whitelist;
@@ -35,6 +40,8 @@ public sealed partial class MechSystem : SharedMechSystem
 {
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
+    [Dependency] private readonly SharedAudioSystem _audioSystem = default!; // Corvax-Forge
+    [Dependency] private readonly SharedActionsSystem _actions = default!; // Corvax-Forge
     [Dependency] private readonly BatterySystem _battery = default!;
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
@@ -58,6 +65,7 @@ public sealed partial class MechSystem : SharedMechSystem
         SubscribeLocalEvent<MechComponent, RemoveBatteryEvent>(OnRemoveBattery);
         SubscribeLocalEvent<MechComponent, MechEntryEvent>(OnMechEntry);
         SubscribeLocalEvent<MechComponent, MechExitEvent>(OnMechExit);
+        SubscribeLocalEvent<MechComponent, EmpPulseEvent>(OnEmpPulse); // Corvax-Forge
 
         SubscribeLocalEvent<MechComponent, DamageChangedEvent>(OnDamageChanged);
         SubscribeLocalEvent<MechComponent, MechEquipmentRemoveMessage>(OnRemoveEquipmentMessage);
@@ -290,6 +298,12 @@ public sealed partial class MechSystem : SharedMechSystem
         // End Frontier: revert state
 
         args.Handled = true;
+    }
+
+    private void OnEmpPulse(EntityUid uid, MechComponent component, EmpPulseEvent args)
+    {
+        Dirty(uid, component);
+        UpdateUserInterface(uid, component);
     }
 
     private void OnDamageChanged(EntityUid uid, MechComponent component, DamageChangedEvent args)

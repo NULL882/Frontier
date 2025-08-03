@@ -1,5 +1,6 @@
 using Content.Shared.FixedPoint;
 using Content.Shared.Whitelist;
+using Robust.Shared.Audio;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -161,6 +162,27 @@ public sealed partial class MechComponent : Component
     [DataField]
     public string? BrokenState;
     #endregion
+
+    // Corvax-Forge start
+    #region Sounds
+    [DataField]
+    public SoundSpecifier LowPowerSound = new SoundPathSpecifier("/Audio/Mecha/lowpower.ogg");
+    [DataField]
+    public SoundSpecifier NominalSound = new SoundPathSpecifier("/Audio/Mecha/nominal.ogg");
+    [DataField]
+    public SoundSpecifier NominalLongSound = new SoundPathSpecifier("/Audio/Mecha/longnanoactivation.ogg");
+    [DataField]
+    public SoundSpecifier PowerupSound = new SoundPathSpecifier("/Audio/Mecha/powerup.ogg");
+    [DataField]
+    public SoundSpecifier CriticalDamageSound = new SoundPathSpecifier("/Audio/Mecha/critnano.ogg");
+    
+    [DataField]
+    public bool FirstStart = true;
+    
+    [DataField]
+    public bool PlayPowerSound = true;
+    #endregion
+    // Corvax-Forge end
 
     [DataField] public EntityUid? MechCycleActionEntity;
     [DataField] public EntityUid? MechUiActionEntity;
