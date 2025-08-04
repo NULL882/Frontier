@@ -3,8 +3,8 @@
                       xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
                       xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
                       Title="{Loc 'mech-menu-title'}"
-                      MinSize="600 440"
-                      SetSize="610 440">
+                      MinSize="660 440"
+                      SetSize="665 445">
     <BoxContainer Orientation="Horizontal"
                   HorizontalExpand="True"
                   VerticalExpand="True">
@@ -25,7 +25,6 @@
                 </BoxContainer>
             </PanelContainer>
             <customControls:HSeparator Margin="0 10 0 10"/>
-            <GridContainer Columns="2">
                 <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
                     <ProgressBar Name="IntegrityDisplayBar"
                                 HorizontalExpand="True"
@@ -38,7 +37,7 @@
                             VerticalAlignment="Center" />
                     </ProgressBar>
                 </BoxContainer>
-                <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True" Margin="0 5 0 0">
                     <ProgressBar Name="EnergyDisplayBar"
                                 HorizontalExpand="True"
                                 SetHeight="25"
@@ -50,7 +49,6 @@
                             VerticalAlignment="Center"/>
                     </ProgressBar>
                 </BoxContainer>
-            </GridContainer>
         </BoxContainer>
 
         <customControls:VSeparator/>

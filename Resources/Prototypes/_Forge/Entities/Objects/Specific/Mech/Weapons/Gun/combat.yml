@@ -6,7 +6,7 @@
   parent: [ BaseMechWeaponRange, CombatMechEquipment ]
   components:
   - type: Sprite
-    sprite: Objects/Specific/Mech/mecha_equipment.rsi
+    sprite: Forge/Objects/Specific/Mech/mech_equipment.rsi
     state: mecha_pulse
   - type: Gun
     fireRate: 1.5
@@ -29,8 +29,8 @@
   parent: [ BaseMechWeaponRange, CombatMechEquipment ]
   components:
   - type: Sprite
-    sprite: Objects/Specific/Mech/mecha_equipment.rsi
-    state: mecha_laser
+    sprite: Forge/Objects/Specific/Mech/mech_equipment.rsi
+    state: mecha_immolator
   - type: Gun
     fireRate: 1.5
     selectedMode: SemiAuto
@@ -52,8 +52,8 @@
   parent: [ BaseMechWeaponRange, CombatMechEquipment ]
   components:
   - type: Sprite
-    sprite: Objects/Specific/Mech/mecha_equipment.rsi
-    state: mecha_laser
+    sprite: Forge/Objects/Specific/Mech/mech_equipment.rsi
+    state: mecha_solaris
   - type: Gun
     fireRate: 3
     selectedMode: FullAuto
@@ -69,14 +69,14 @@
 
 - type: entity
   id: WeaponMechCombatFiredartLaser
-  name: CH-PS "Firedart" Laser
+  name: CH-PS "Firedart" Lasers
   description: The standard combat armament of the mechs is a combat mounted laser.
   suffix: Mech Weapon, Gun, Combat, Laser
   parent: [ BaseMechWeaponRange, CombatMechEquipment ]
   components:
   - type: Sprite
-    sprite: Objects/Specific/Mech/mecha_equipment.rsi
-    state: mecha_laser
+    sprite: Forge/Objects/Specific/Mech/mech_equipment.rsi
+    state: mecha_firedart
   - type: Gun
     fireRate: 1
     selectedMode: SemiAuto
@@ -91,6 +91,31 @@
   - type: AmmoCounter
 
 - type: entity
+  id: WeaponMechCombatXRayProjector
+  name: S-1 X-Ray Projector
+  description: An experimental mech combat unit that fires X-rays
+  suffix: Mech Weapon, Gun, Combat, X-ray
+  parent: [ BaseMechWeaponRange, CombatMechEquipment ]
+  components:
+  - type: Sprite
+    sprite: Forge/Objects/Specific/Mech/mech_equipment.rsi
+    state: mecha_xray
+  - type: Gun
+    fireRate: 1
+    selectedMode: SemiAuto
+    availableModes:
+      - SemiAuto
+    soundGunshot:
+      path: /Audio/Weapons/Guns/Gunshots/laser.ogg
+  - type: HitscanBatteryAmmoProvider
+    proto: NFXrayLaser
+    fireCost: 120
+  - type: Appearance
+  - type: AmmoCounter
+  - type: Battery
+    maxCharge: 120 # Battery is charged by mech
+
+- type: entity
   id: WeaponMechCombatTeslaCannon
   name: P-X Tesla Cannon
   description: A weapon for combat mechs, firing energy balls, based on the principle of an experimental Tesla engine.
@@ -98,8 +123,8 @@
   parent: [ BaseMechWeaponRange, CombatMechEquipment ]
   components:
   - type: Sprite
-    sprite: Objects/Specific/Mech/mecha_equipment.rsi
-    state: mecha_wholegen
+    sprite: Forge/Objects/Specific/Mech/mech_equipment.rsi
+    state: mecha_teslacannon
   - type: Gun
     projectileSpeed: 6
     fireRate: 0.4
@@ -124,13 +149,15 @@
   parent: [ BaseMechWeaponRange, CombatMechEquipment ]
   components:
   - type: Sprite
-    sprite: Objects/Specific/Mech/mecha_equipment.rsi
+    sprite: Forge/Objects/Specific/Mech/mech_equipment.rsi
     state: mecha_disabler
   - type: Gun
     fireRate: 5
-    selectedMode: FullAuto
+    shotsPerBurst: 2
+    burstCooldown: 1
+    selectedMode: Burst
     availableModes:
-      - FullAuto
+      - Burst
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/taser2.ogg
   - type: ProjectileBatteryAmmoProvider
@@ -197,9 +224,11 @@
     state: mecha_uac2
   - type: Gun
     fireRate: 6
-    selectedMode: FullAuto
+    shotsPerBurst: 3
+    burstCooldown: 1
+    selectedMode: Burst
     availableModes:
-      - FullAuto
+      - Burst
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/shotgun.ogg
   - type: ProjectileBatteryAmmoProvider

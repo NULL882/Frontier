@@ -86,7 +86,7 @@
       mech-battery-slot: !type:ContainerSlot
   - type: Damageable
     damageContainer: Inorganic
-    damageModifierSet: LightArmor
+    damageModifierSet: BaseArmor
   - type: FootstepModifier
     footstepSoundCollection:
       path: /Audio/Mecha/mechmove03.ogg
@@ -192,7 +192,7 @@
       params:
         variation: 0.17
   - type: Mech
-    maxEquipmentAmount: 2
+    maxEquipmentAmount: 3 # Corvax-Forge
     baseState: honker
     openState: honker-open
     brokenState: honker-broken

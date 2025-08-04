@@ -59,8 +59,9 @@
     baseState: ripleymkii
     openState: ripleymkii-open
     brokenState: ripleymkii-broken
-    mechToPilotDamageMultiplier: 0.2
+    mechToPilotDamageMultiplier: 0.1
     airtight: true
+    maxEquipmentAmount: 3
     pilotWhitelist:
       components:
         - HumanoidAppearance
@@ -74,7 +75,7 @@
     baseWalkSpeed: 1
     baseSprintSpeed: 2
   - type: Damageable
-    damageModifierSet: MediumArmorNT
+    damageModifierSet: RipleyMKIIArmor
 
 - type: entity
   id: MechRipley2Battery
@@ -109,8 +110,9 @@
     baseState: clarke
     openState: clarke-open
     brokenState: clarke-broken
-    mechToPilotDamageMultiplier: 0.2
+    mechToPilotDamageMultiplier: 0.1
     airtight: true
+    maxEquipmentAmount: 4
     pilotWhitelist:
       components:
         - HumanoidAppearance
@@ -121,10 +123,12 @@
       types:
         Blunt: 26
   - type: MovementSpeedModifier
-    baseWalkSpeed: 2.5
-    baseSprintSpeed: 4.5
+    baseWalkSpeed: 3.5
+    baseSprintSpeed: 5.5
   - type: CanMoveInAir
   - type: MovementAlwaysTouching
+  - type: Damageable
+    damageModifierSet: ClarkeArmor
 
 - type: entity
   id: MechClarkeBattery
@@ -186,8 +190,10 @@
         Blunt: 25
         Structural: 180
   - type: MovementSpeedModifier
-    baseWalkSpeed: 2
-    baseSprintSpeed: 2.6
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 3.5
+  - type: Damageable
+    damageModifierSet: GygaxArmor
 
 - type: entity
   id: MechGygaxBattery
@@ -239,7 +245,7 @@
     baseWalkSpeed: 1.5
     baseSprintSpeed: 2
   - type: Damageable
-    damageModifierSet: MediumArmorNT
+    damageModifierSet: DurandArmor
   - type: CanMoveInAir
   - type: MovementAlwaysTouching
   - type: Repairable
@@ -299,7 +305,7 @@
     baseWalkSpeed: 1
     baseSprintSpeed: 1.5
   - type: Damageable
-    damageModifierSet: HeavyArmorNT
+    damageModifierSet: HeavyArmor
   - type: CanMoveInAir
   - type: MovementAlwaysTouching
   - type: Repairable
@@ -369,7 +375,7 @@
     baseWalkSpeed: 2.2
     baseSprintSpeed: 3.7
   - type: Damageable
-    damageModifierSet: HeavyArmorNT
+    damageModifierSet: HeavyArmor
   - type: CanMoveInAir
   - type: MovementAlwaysTouching
   - type: Repairable
@@ -442,7 +448,7 @@
     baseWalkSpeed: 2.2
     baseSprintSpeed: 3.7
   - type: Damageable
-    damageModifierSet: MediumArmorSyndi
+    damageModifierSet: DarkGygaxArmor
   - type: CanMoveInAir
   - type: MovementAlwaysTouching
   - type: Repairable
@@ -512,7 +518,7 @@
     baseWalkSpeed: 1
     baseSprintSpeed: 1.5
   - type: Damageable
-    damageModifierSet: HeavyArmorSyndi
+    damageModifierSet: HeavyArmor
   - type: CanMoveInAir
   - type: MovementAlwaysTouching
   - type: Repairable
