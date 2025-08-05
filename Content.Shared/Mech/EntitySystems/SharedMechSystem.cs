@@ -25,6 +25,8 @@ using Content.Shared.Popups;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Weapons.Ranged.Events; // Corvax-Forge
 using Content.Shared.Whitelist;
+using Robust.Shared.Audio.Systems; // Corvax-Forge
+using Robust.Shared.GameObjects; // Corvax-Forge
 using Robust.Shared.Configuration;
 using Robust.Shared.Containers;
 using Robust.Shared.Network;
@@ -55,6 +57,8 @@ public abstract class SharedMechSystem : EntitySystem
     [Dependency] private readonly SharedHandsSystem _hands = default!; // Corvax-Forge
     [Dependency] private readonly SharedVirtualItemSystem _virtualItem = default!; // Corvax-Forge
     [Dependency] private readonly IConfigurationManager _config = default!; // Corvax-Forge
+    [Dependency] private readonly SharedAudioSystem _audioSystem = default!; // Corvax-Forge
+    [Dependency] private readonly SharedPointLightSystem _light = default!; // Corvax-Forge
 
     // Corvax-Forge: Local variable for checking if mech guns can be used out of them.
     private bool _canUseMechGunOutside;
@@ -168,14 +172,30 @@ public abstract class SharedMechSystem : EntitySystem
         rider.Mech = mech;
         Dirty(pilot, rider);
 
+        if ((component.Integrity / component.MaxIntegrity) * 100 >= 50 )
+            if (component.FirstStart)
+            {
+                _audioSystem.PlayEntity(component.NominalLongSound, pilot, mech);
+                component.FirstStart = false;
+                Dirty(mech, component);
+            }
+            else
+                _audioSystem.PlayEntity(component.NominalSound, pilot, mech);
+        else
+            _audioSystem.PlayEntity(component.CriticalDamageSound, pilot, mech);
+
         if (_net.IsClient)
             return;
 
         _actions.AddAction(pilot, ref component.MechCycleActionEntity, component.MechCycleAction, mech);
         _actions.AddAction(pilot, ref component.MechUiActionEntity, component.MechUiAction, mech);
         _actions.AddAction(pilot, ref component.MechEjectActionEntity, component.MechEjectAction, mech);
+        if (_light.TryGetLight(mech, out var light))
+            _actions.AddAction(pilot, ref component.MechToggleLightActionEntity, component.MechToggleLightAction, mech); // Corvax-Forge
         if (component.Airtight)
-            _actions.AddAction(pilot, ref component.MechToggleInternalsActionEntity, component.MechToggleInternalsAction, mech);
+            _actions.AddAction(pilot, ref component.MechToggleInternalsActionEntity, component.MechToggleInternalsAction, mech); // Corvax-Forge
+        if (HasComp<MechThrustersComponent>(mech))
+            _actions.AddAction(pilot, ref component.MechToggleThrustersActionEntity, component.MechToggleThrustersAction, mech); // Corvax-Forge
 
         RaiseEquipmentEquippedEvent((mech, component), pilot); // Frontier (note: must send pilot separately, not yet in their seat)
     }
@@ -342,6 +362,17 @@ public abstract class SharedMechSystem : EntitySystem
         if (component.Energy + delta < 0)
             return false;
 
+        if ((component.Energy / component.MaxEnergy) * 100 <= 25 
+            && component.PlayPowerSound 
+            && component.PilotSlot.ContainedEntity != null)
+        {
+            _audioSystem.PlayEntity(component.LowPowerSound, component.PilotSlot.ContainedEntity.Value, uid);
+            
+            component.PlayPowerSound = false;
+        }
+        else if ((component.Energy / component.MaxEnergy) * 100 >= 25)
+            component.PlayPowerSound = true;
+
         component.Energy = FixedPoint2.Clamp(component.Energy + delta, 0, component.MaxEnergy);
         Dirty(uid, component);
         UpdateUserInterface(uid, component);
@@ -360,6 +391,17 @@ public abstract class SharedMechSystem : EntitySystem
             return;
 
         component.Integrity = FixedPoint2.Clamp(value, 0, component.MaxIntegrity);
+
+        if ((component.Integrity / component.MaxIntegrity) * 100 <= 50 
+            && component.PlayIntegritySound 
+            && component.PilotSlot.ContainedEntity != null)
+        {
+            _audioSystem.PlayEntity(component.CriticalDamageSound, component.PilotSlot.ContainedEntity.Value, uid);
+            
+            component.PlayIntegritySound = false;
+        }
+        else if ((component.Integrity / component.MaxIntegrity) * 100 >= 50)
+            component.PlayIntegritySound = true;
 
         if (component.Integrity <= 0)
         {
@@ -563,7 +605,7 @@ public abstract class SharedMechSystem : EntitySystem
         RaiseLocalEvent(uid, ev);
     }
 
-    private void UpdateAppearance(EntityUid uid, MechComponent? component = null,
+    protected void UpdateAppearance(EntityUid uid, MechComponent? component = null,
         AppearanceComponent? appearance = null)
     {
         if (!Resolve(uid, ref component, ref appearance, false))
@@ -571,6 +613,7 @@ public abstract class SharedMechSystem : EntitySystem
 
         _appearance.SetData(uid, MechVisuals.Open, IsEmpty(component), appearance);
         _appearance.SetData(uid, MechVisuals.Broken, component.Broken, appearance);
+        _appearance.SetData(uid, MechVisuals.Light, component.Light, appearance); // Corvax-Forge
     }
 
     private void OnDragDrop(EntityUid uid, MechComponent component, ref DragDropTargetEvent args)
@@ -661,5 +704,9 @@ public sealed partial class MechEntryEvent : SimpleDoAfterEvent
 
 [Serializable, NetSerializable]
 public sealed partial class HandleMechEquipmentBatteryEvent : EntityEventArgs
+{
+}
+
+public sealed partial class MechToggleThrustersEvent : InstantActionEvent // Corvax-Forge
 {
 }

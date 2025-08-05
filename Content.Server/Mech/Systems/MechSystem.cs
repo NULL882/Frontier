@@ -8,12 +8,15 @@ using Content.Server.Emp; // Corvax-Forge
 using Content.Server.Mech.Components;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
+using Content.Server.PowerCell; // Corvax-Forge
+using Content.Shared.PowerCell; // Corvax-Forge
 using Content.Shared.ActionBlocker;
 using Content.Shared.Actions; // Frontier
 using Content.Shared.Atmos; // Corvax-Forge
 using Content.Shared.Atmos.Components; // Corvax-Forge
 using Content.Shared.Damage;
 using Content.Shared.DoAfter;
+using Content.Shared.Examine; // Corvax-Forge
 using Content.Shared.FixedPoint;
 using Content.Shared.Hands.Components; // Corvax-Forge
 using Content.Shared.Interaction;
@@ -21,13 +24,13 @@ using Content.Shared.Toggleable; // Frontier
 using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
 using Content.Shared.Mech.EntitySystems;
+using Content.Shared.Movement.Components; // Corvax-Forge
 using Content.Shared.Movement.Events;
 using Content.Shared.Popups;
 using Content.Shared.Tag;
 using Content.Shared.Tools.Components;
 using Content.Shared.Verbs;
 using Content.Shared.Wires;
-using Content.Server.Body.Systems;
 using Content.Shared.Tools.Systems;
 using Robust.Server.Containers;
 using Robust.Server.GameObjects;
@@ -61,6 +64,9 @@ public sealed partial class MechSystem : SharedMechSystem
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly SharedToolSystem _toolSystem = default!;
     [Dependency] private readonly NpcFactionSystem _npcFaction = default!; // Frontier
+    [Dependency] private readonly SharedPointLightSystem _light = default!; // Corvax-Forge
+    [Dependency] private readonly PowerCellSystem _powerCell = default!;
+    [Dependency] protected readonly IGameTiming Timing = default!;
     [Dependency] private readonly GasTankSystem _gasTank = default!; // Corvax-Forge
 
     /// <inheritdoc/>
@@ -68,6 +74,8 @@ public sealed partial class MechSystem : SharedMechSystem
     {
         base.Initialize();
 
+        SubscribeLocalEvent<MechComponent, ToggleActionEvent>(OnToggleLightEvent); // Corvax-Forge
+        SubscribeLocalEvent<MechComponent, MechToggleThrustersEvent>(OnMechToggleThrusters); // Corvax-Forge
         SubscribeLocalEvent<MechComponent, InteractUsingEvent>(OnInteractUsing);
         SubscribeLocalEvent<MechComponent, EntInsertedIntoContainerMessage>(OnInsertBattery);
         SubscribeLocalEvent<MechComponent, MapInitEvent>(OnMapInit);
@@ -75,6 +83,7 @@ public sealed partial class MechSystem : SharedMechSystem
         SubscribeLocalEvent<MechComponent, MechOpenUiEvent>(OnOpenUi);
         SubscribeLocalEvent<MechComponent, RemoveBatteryEvent>(OnRemoveBattery);
         SubscribeLocalEvent<MechComponent, RemoveGasTankEvent>(OnRemoveGasTank); // Corvax-Forge
+        SubscribeLocalEvent<MechComponent, ChargeChangedEvent>(OnChargeChanged); // Corvax-Forge
         SubscribeLocalEvent<MechComponent, MechEntryEvent>(OnMechEntry);
         SubscribeLocalEvent<MechComponent, MechExitEvent>(OnMechExit);
         SubscribeLocalEvent<MechComponent, EmpPulseEvent>(OnEmpPulse); // Corvax-Forge
@@ -99,9 +108,144 @@ public sealed partial class MechSystem : SharedMechSystem
         #endregion
     }
 
+
+    // Corvax-Forge start
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+        var lightDraw = EntityQueryEnumerator<PowerCellDrawComponent, MechComponent>();
+
+        while (lightDraw.MoveNext(out var uid, out var comp, out var mechComp))
+        {
+            if (!mechComp.Light)
+                continue;
+
+            if (Timing.CurTime < comp.NextUpdateTime)
+                continue;
+
+            comp.NextUpdateTime += comp.Delay;
+
+            if (mechComp.BatterySlot.ContainedEntity == null
+                || !TryComp<BatteryComponent>(mechComp.BatterySlot.ContainedEntity.Value, out var battery))
+                continue;
+
+            if (!_battery.TryUseCharge(mechComp.BatterySlot.ContainedEntity.Value, comp.DrawRate))
+                continue;
+
+            var ev = new ChargeChangedEvent(battery.CurrentCharge, battery.MaxCharge);
+            RaiseLocalEvent(uid, ref ev);
+            UpdateUserInterface(uid, mechComp);
+        }
+
+        var thrustDraw = EntityQueryEnumerator<MechThrustersComponent, MechComponent>();
+
+        while (thrustDraw.MoveNext(out var uid, out var comp, out var mechComp))
+        {
+            if (!comp.ThrustersEnabled)
+                continue;
+
+            if (Timing.CurTime < comp.NextUpdateTime)
+                continue;
+
+            comp.NextUpdateTime += comp.Delay;
+
+            if (mechComp.BatterySlot.ContainedEntity == null
+                || !TryComp<BatteryComponent>(mechComp.BatterySlot.ContainedEntity.Value, out var battery))
+                continue;
+
+            if (!_battery.TryUseCharge(mechComp.BatterySlot.ContainedEntity.Value, comp.DrawRate))
+                continue;
+
+            var ev = new ChargeChangedEvent(battery.CurrentCharge, battery.MaxCharge);
+            RaiseLocalEvent(uid, ref ev);
+            UpdateUserInterface(uid, mechComp);
+        }
+    }
+
+    private void OnMechToggleThrusters(EntityUid uid, MechComponent component, MechToggleThrustersEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (!TryComp<MechThrustersComponent>(uid, out var mechThrusters))
+            return;
+
+        args.Handled = true;
+
+        mechThrusters.ThrustersEnabled = !mechThrusters.ThrustersEnabled;
+        
+        _actions.SetToggled(component.MechToggleThrustersActionEntity, mechThrusters.ThrustersEnabled);
+
+        if (mechThrusters.ThrustersEnabled)
+        {
+            AddComp<CanMoveInAirComponent>(uid);
+            AddComp<MovementAlwaysTouchingComponent>(uid);
+        }
+        else
+        {
+            RemComp<CanMoveInAirComponent>(uid);
+            RemComp<MovementAlwaysTouchingComponent>(uid);
+        }
+
+        Dirty(uid, mechThrusters);
+    }
+
+    private void OnToggleLightEvent(EntityUid uid, MechComponent component, ToggleActionEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (component.BatterySlot.ContainedEntity == null 
+            || !TryComp<BatteryComponent>(component.BatterySlot.ContainedEntity, out var battery) 
+            || battery.CurrentCharge <= 0)
+            return;
+
+        args.Handled = true;
+
+        ToggleLight(uid, component);
+    }
+
+    private void OnChargeChanged(Entity<MechComponent> ent, ref ChargeChangedEvent args)
+    {
+        if (args.Charge == 0 && ent.Comp.Light)
+            ToggleLight(ent.Owner, ent.Comp);
+
+        ent.Comp.Energy = args.Charge;
+        ent.Comp.MaxEnergy = args.MaxCharge;
+
+        _actionBlocker.UpdateCanMove(ent.Owner);
+
+        Dirty(ent.Owner, ent.Comp);
+    }
+    
+    public void ToggleLight(EntityUid uid, MechComponent component)
+    {
+        if (!_light.TryGetLight(uid, out var light))
+            return;
+
+        _light.SetEnabled(uid, !component.Light, comp: light);
+
+        _actions.SetToggled(component.MechToggleLightActionEntity, !component.Light);
+
+        _audioSystem.PlayPredicted(component.ToggleLightSound, uid, uid);
+
+        component.Light = !component.Light;
+
+        Dirty(uid, component);
+
+        UpdateAppearance(uid, component);
+    }
+
+    private void OnEmpPulse(EntityUid uid, MechComponent component, EmpPulseEvent args)
+    {
+        Dirty(uid, component);
+        UpdateUserInterface(uid, component);
+    }
+    // Corvax-Forge end
+
     private void OnMechCanMoveEvent(EntityUid uid, MechComponent component, UpdateCanMoveEvent args)
     {
-        if (component.Broken || component.Integrity <= 0 || component.Energy <= 0)
+        if (component.Broken || component.Integrity <= 5 || component.Energy <= 5)
             args.Cancel();
     }
 
@@ -340,12 +484,6 @@ public sealed partial class MechSystem : SharedMechSystem
         // End Frontier: revert state
 
         args.Handled = true;
-    }
-
-    private void OnEmpPulse(EntityUid uid, MechComponent component, EmpPulseEvent args)
-    {
-        Dirty(uid, component);
-        UpdateUserInterface(uid, component);
     }
 
     private void OnDamageChanged(EntityUid uid, MechComponent component, DamageChangedEvent args)

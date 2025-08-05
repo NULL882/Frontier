@@ -38,6 +38,34 @@
       tags:
       - SmallMech
 
+- type: entity
+  id: NanotrasenMech
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Mech
+    firstStart: true
+    lowPowerSound:
+      path: /Audio/Forge/Mecha/lowpowernano.ogg
+    nominalSound:
+      path: /Audio/Forge/Mecha/nominalnano.ogg
+      
+- type: entity
+  id: SyndieMech
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Mech
+    firstStart: true
+    lowPowerSound:
+      path: /Audio/Forge/Mecha/lowpowersyndi.ogg
+    nominalSound:
+      path: /Audio/Forge/Mecha/nominalsyndi.ogg
+    nominalLongSound:
+      path: /Audio/Forge/Mecha/longsyndiactivation.ogg
+    criticalDamageSound:
+      path: /Audio/Forge/Mecha/critdestrsyndi.ogg
+
 # Ripley MK-II
 - type: entity
   id: MechRipley2
@@ -105,12 +133,12 @@
       state: clarke
   - type: FootstepModifier
     footstepSoundCollection:
-      path: /Audio/Mecha/sound_mecha_powerloader_step.ogg
+      path: /Audio/Forge/Mecha/mechmove04.ogg
   - type: Mech
     baseState: clarke
     openState: clarke-open
     brokenState: clarke-broken
-    mechToPilotDamageMultiplier: 0.1
+    mechToPilotDamageMultiplier: 0.05
     airtight: true
     maxEquipmentAmount: 4
     pilotWhitelist:
@@ -123,10 +151,9 @@
       types:
         Blunt: 26
   - type: MovementSpeedModifier
-    baseWalkSpeed: 3.5
+    baseWalkSpeed: 4.5
     baseSprintSpeed: 5.5
-  - type: CanMoveInAir
-  - type: MovementAlwaysTouching
+  - type: MechThrusters
   - type: Damageable
     damageModifierSet: ClarkeArmor
 
@@ -177,8 +204,10 @@
     baseState: gygax
     openState: gygax-open
     brokenState: gygax-broken
-    mechToPilotDamageMultiplier: 0.1
+    mechToPilotDamageMultiplier: 0.05
     airtight: true
+    maxIntegrity: 300
+    maxEquipmentAmount: 4
     pilotWhitelist:
       components:
         - HumanoidAppearance
@@ -190,10 +219,12 @@
         Blunt: 25
         Structural: 180
   - type: MovementSpeedModifier
-    baseWalkSpeed: 2.5
-    baseSprintSpeed: 3.5
+    baseWalkSpeed: 3
+    baseSprintSpeed: 4
   - type: Damageable
     damageModifierSet: GygaxArmor
+  - type: PointLight
+    color: green
 
 - type: entity
   id: MechGygaxBattery
@@ -228,9 +259,10 @@
     baseState: durand
     openState: durand-open
     brokenState: durand-broken
-    mechToPilotDamageMultiplier: 0.1
+    mechToPilotDamageMultiplier: 0.05
     airtight: true
     maxIntegrity: 400
+    maxEquipmentAmount: 3
     pilotWhitelist:
       components:
         - HumanoidAppearance
@@ -246,11 +278,12 @@
     baseSprintSpeed: 2
   - type: Damageable
     damageModifierSet: DurandArmor
-  - type: CanMoveInAir
-  - type: MovementAlwaysTouching
+  - type: MechThrusters
   - type: Repairable
     fuelCost: 30
     doAfterDelay: 15
+  - type: PointLight
+    color: green
 
 - type: entity
   id: MechDurandBattery
@@ -264,12 +297,73 @@
       mech-gas-tank-slot:
       - MechAirTankFilled
 
+# NFSD Combat Mechs
+
+# Ares
+- type: entity
+  id: MechAres
+  parent: [ BaseMech, CombatMech, NanotrasenMech ]
+  name: Ares
+  description: A slow but beefy combat exosuit that is extra scary in confined spaces due to its punches. Xenos hate it!
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    noRot: true
+    sprite: Forge/Objects/Specific/Mech/mecha.rsi
+    layers:
+    - map: [ "enum.MechVisualLayers.Base" ]
+      state: ares
+  - type: FootstepModifier
+    footstepSoundCollection:
+      path: /Audio/Mecha/sound_mecha_powerloader_step.ogg
+  - type: Mech
+    baseState: ares
+    openState: ares-open
+    brokenState: ares-broken
+    mechToPilotDamageMultiplier: 0.05
+    airtight: true
+    maxIntegrity: 450
+    maxEquipmentAmount: 3
+    pilotWhitelist:
+      components:
+        - HumanoidAppearance
+  - type: MeleeWeapon
+    hidden: true
+    attackRate: 1
+    damage:
+      types:
+        Blunt: 40
+        Structural: 220
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 2.5
+  - type: Damageable
+    damageModifierSet: HeavyArmor
+  - type: MechThrusters
+  - type: Repairable
+    fuelCost: 30
+    doAfterDelay: 15
+  - type: PointLight
+    color: yellow
+
+- type: entity
+  id: MechAresBattery
+  parent: MechAres
+  suffix: Battery, Air
+  components:
+  - type: ContainerFill
+    containers:
+      mech-battery-slot:
+      - PowerCellHyper
+      mech-gas-tank-slot:
+      - MechAirTankFilled
+
 # Nanotrasen Combat Mechs
 
 # Marauder
 - type: entity
   id: MechMarauder
-  parent: [ BaseMech, CombatMech, BaseCentcommContraband ]
+  parent: [ BaseMech, CombatMech, BaseCentcommContraband, NanotrasenMech ]
   name: Marauder
   description: Looks like we're all saved. # ERT mech
   components:
@@ -300,17 +394,18 @@
     damage:
       types:
         Blunt: 40
-        Structural: 200
+        Structural: 400
   - type: MovementSpeedModifier
-    baseWalkSpeed: 1
-    baseSprintSpeed: 1.5
+    baseWalkSpeed: 2.2
+    baseSprintSpeed: 3.7
   - type: Damageable
     damageModifierSet: HeavyArmor
-  - type: CanMoveInAir
-  - type: MovementAlwaysTouching
+  - type: MechThrusters
   - type: Repairable
     fuelCost: 45
     doAfterDelay: 15
+  - type: PointLight
+    color: green
 
 - type: entity
   id: MechMarauderBattery
@@ -339,7 +434,7 @@
 # Seraph
 - type: entity
   id: MechSeraph
-  parent: [ BaseMech, CombatMech, BaseCentcommContraband ]
+  parent: [ BaseMech, CombatMech, BaseCentcommContraband, NanotrasenMech ]
   name: Seraph
   description: That's the last thing you'll see. # Death Squad mech
   components:
@@ -372,15 +467,16 @@
         Blunt: 60
         Structural: 400
   - type: MovementSpeedModifier
-    baseWalkSpeed: 2.2
-    baseSprintSpeed: 3.7
+    baseWalkSpeed: 3
+    baseSprintSpeed: 4
   - type: Damageable
     damageModifierSet: HeavyArmor
-  - type: CanMoveInAir
-  - type: MovementAlwaysTouching
+  - type: MechThrusters
   - type: Repairable
     fuelCost: 50
     doAfterDelay: 20
+  - type: PointLight
+    color: red
 
 - type: entity
   id: MechSeraphBattery
@@ -412,7 +508,7 @@
 # Dark Gygax
 - type: entity
   id: MechGygaxSyndie
-  parent: [ BaseMech, CombatMech ]
+  parent: [ BaseMech, CombatMech, SyndieMech ]
   name: Dark Gygax
   description: A modified Gygax used for nefarious purposes. On the back of the armor plate there is an inscription "Cybersun Inc."
   components:
@@ -449,11 +545,12 @@
     baseSprintSpeed: 3.7
   - type: Damageable
     damageModifierSet: DarkGygaxArmor
-  - type: CanMoveInAir
-  - type: MovementAlwaysTouching
+  - type: MechThrusters
   - type: Repairable
     fuelCost: 40
     doAfterDelay: 20
+  - type: PointLight
+    color: red
 
 - type: entity
   id: MechGygaxSyndieBattery
@@ -482,7 +579,7 @@
 # Mauler
 - type: entity
   id: MechMaulerSyndie
-  parent: [ BaseMech, CombatMech ]
+  parent: [ BaseMech, CombatMech, SyndieMech ]
   name: Mauler
   description: A modified Marauder used by the Syndicate that's not as maneuverable as the Dark Gygax, but it makes up for that in armor and sheer firepower. On the back of the armor plate there is an inscription "Cybersun Inc."
   components:
@@ -519,11 +616,12 @@
     baseSprintSpeed: 1.5
   - type: Damageable
     damageModifierSet: HeavyArmor
-  - type: CanMoveInAir
-  - type: MovementAlwaysTouching
+  - type: MechThrusters
   - type: Repairable
     fuelCost: 50
     doAfterDelay: 25
+  - type: PointLight
+    color: red
 
 - type: entity
   id: MechMaulerSyndieBattery

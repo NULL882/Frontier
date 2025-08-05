@@ -106,26 +106,22 @@
         node: start
       - !type:DoActsBehavior
         acts: ["Destruction"]
-  - type: PointLight
-    enabled: false
-    radius: 8
+  - type: PointLight # Corvax-Forge
+    mask: /Textures/Effects/LightMasks/cone.png
+    autoRot: true
+    radius: 6
     energy: 5
-  - type: LightBehaviour # Corvax-Forge
-    behaviours:
-      - !type:FadeBehaviour
-        id: radiating
-        maxDuration: 2.0
-        startValue: 3.0
-        endValue: 2.0
-        isLooped: true
-        reverseWhenFinished: true
-      - !type:PulseBehaviour
-        id: blinking
-        interpolate: Nearest
-        maxDuration: 1.0
-        minValue: 0.1
-        maxValue: 2.0
-        isLooped: true
+    enabled: false
+  - type: PowerCellDraw
+    enabled: false
+    drawRate: 0.5
+    useRate: 1.5
+  - type: RadarBlip
+    enabled: true
+    scale: 1.5
+    radarColor: "#ff8800"
+    highlightedRadarColor: "#000000"
+    requireNoGrid: true
 
 # Ripley MK-I
 - type: entity

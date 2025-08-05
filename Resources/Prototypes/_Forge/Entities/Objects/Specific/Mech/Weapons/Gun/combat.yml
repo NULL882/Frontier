@@ -1,6 +1,6 @@
 - type: entity
   id: WeaponMechCombatPulseRifle
-  name: eZ-14 mk2 Heavy pulse rifle
+  name: Mk.IV Pulse Heavy Cannon
   description: Fires a heavy pulse laser.
   suffix: Mech Weapon, Gun, Combat, Pulse
   parent: [ BaseMechWeaponRange, CombatMechEquipment ]
@@ -9,17 +9,18 @@
     sprite: Forge/Objects/Specific/Mech/mech_equipment.rsi
     state: mecha_pulse
   - type: Gun
-    fireRate: 1.5
-    selectedMode: SemiAuto
+    fireRate: 3
+    selectedMode: FullAuto
     availableModes:
-      - SemiAuto
+      - FullAuto
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/laser3.ogg
   - type: HitscanBatteryAmmoProvider
     proto: NFPulse
-    fireCost: 40
+    fireCost: 50
+  - type: Battery
+    maxCharge: 50
   - type: Appearance
-  - type: AmmoCounter
 
 - type: entity
   id: WeaponMechCombatImmolationGun
@@ -32,7 +33,7 @@
     sprite: Forge/Objects/Specific/Mech/mech_equipment.rsi
     state: mecha_immolator
   - type: Gun
-    fireRate: 1.5
+    fireRate: 1
     selectedMode: SemiAuto
     availableModes:
       - SemiAuto
@@ -40,9 +41,10 @@
       path: /Audio/Weapons/Guns/Gunshots/laser_cannon.ogg
   - type: HitscanBatteryAmmoProvider
     proto: NFRedSpecialLaser
-    fireCost: 30
+    fireCost: 40
+  - type: Battery
+    maxCharge: 40
   - type: Appearance
-  - type: AmmoCounter
 
 - type: entity
   id: WeaponMechCombatSolarisLaser
@@ -64,8 +66,9 @@
   - type: HitscanBatteryAmmoProvider
     proto: NFRedHeavyLaser
     fireCost: 30
+  - type: Battery
+    maxCharge: 30
   - type: Appearance
-  - type: AmmoCounter
 
 - type: entity
   id: WeaponMechCombatFiredartLaser
@@ -87,8 +90,9 @@
   - type: HitscanBatteryAmmoProvider
     proto: NFRedMediumLaser
     fireCost: 10
+  - type: Battery
+    maxCharge: 10
   - type: Appearance
-  - type: AmmoCounter
 
 - type: entity
   id: WeaponMechCombatXRayProjector
@@ -111,9 +115,8 @@
     proto: NFXrayLaser
     fireCost: 120
   - type: Appearance
-  - type: AmmoCounter
   - type: Battery
-    maxCharge: 120 # Battery is charged by mech
+    maxCharge: 120
 
 - type: entity
   id: WeaponMechCombatTeslaCannon
@@ -138,8 +141,9 @@
   - type: ProjectileBatteryAmmoProvider
     proto: NFTeslaGunBullet
     fireCost: 99
+  - type: Battery
+    maxCharge: 99
   - type: Appearance
-  - type: AmmoCounter
 
 - type: entity
   id: WeaponMechCombatDisabler
@@ -163,8 +167,9 @@
   - type: ProjectileBatteryAmmoProvider
     proto: NFBulletDisabler
     fireCost: 10
+  - type: Battery
+    maxCharge: 10
   - type: Appearance
-  - type: AmmoCounter
 
 - type: entity
   id: WeaponMechCombatShotgun
@@ -186,8 +191,9 @@
   - type: ProjectileBatteryAmmoProvider
     proto: NFShellShotgunBuckshot
     fireCost: 30
+  - type: Battery
+    maxCharge: 30
   - type: Appearance
-  - type: AmmoCounter
 
 - type: entity
   id: WeaponMechCombatShotgunIncendiary
@@ -209,8 +215,9 @@
   - type: ProjectileBatteryAmmoProvider
     proto: NFShellShotgunIncendiary
     fireCost: 40
+  - type: Battery
+    maxCharge: 40
   - type: Appearance
-  - type: AmmoCounter
 
 - type: entity
   id: WeaponMechCombatUltraRifle
@@ -234,8 +241,9 @@
   - type: ProjectileBatteryAmmoProvider
     proto: NFCartridgeRifle30
     fireCost: 5
+  - type: Battery
+    maxCharge: 5
   - type: Appearance
-  - type: AmmoCounter
 
 - type: entity
   id: WeaponMechCombatMissileRack8
@@ -257,8 +265,9 @@
   - type: ProjectileBatteryAmmoProvider
     proto: NFBulletWeakRocket
     fireCost: 25
+  - type: Battery
+    maxCharge: 25
   - type: Appearance
-  - type: AmmoCounter
 
 - type: entity
   id: WeaponMechCombatMissileRack6
@@ -283,13 +292,12 @@
   - type: Battery
     maxCharge: 300 # Battery is charged by mech
   - type: Appearance
-  - type: AmmoCounter
 
 - type: entity
-  id: WeaponMechCombatFlashbangLauncher
-  name: SGL-6 Flashbang Launcher
-  description: A mounter launcher that fires flash grenades to deal with riots.
-  suffix: Mech Weapon, Gun, Combat, Flashbang
+  id: WeaponMechCombatEMPLauncher
+  name: SGL-6 EMP Launcher
+  description: A mounter launcher that fires EMP grenades.
+  suffix: Mech Weapon, Gun, Combat, EMP
   parent: [ BaseMechWeaponRange, CombatMechEquipment ]
   components:
   - type: Sprite
@@ -305,7 +313,8 @@
     soundEmpty:
       path: /Audio/Weapons/Guns/Empty/lmg_empty.ogg
   - type: ProjectileBatteryAmmoProvider
-    proto: GrenadeFlash
-    fireCost: 30
+    proto: NFGrenadeEMP
+    fireCost: 200
+  - type: Battery
+    maxCharge: 200
   - type: Appearance
-  - type: AmmoCounter

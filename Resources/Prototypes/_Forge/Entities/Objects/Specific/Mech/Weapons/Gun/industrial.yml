@@ -19,8 +19,9 @@
   - type: ProjectileBatteryAmmoProvider
     proto: NFBulletKinetic
     fireCost: 10
+  - type: Battery
+    maxCharge: 10
   - type: Appearance
-  - type: AmmoCounter
   - type: UpgradeableGun
     whitelist:
       tags:
