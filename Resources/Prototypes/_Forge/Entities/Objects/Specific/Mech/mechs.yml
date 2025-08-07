@@ -3,6 +3,7 @@
   abstract: true
   categories: [ HideSpawnMenu ]
   components:
+  - type: AccessReader
   - type: Mech
     equipmentWhitelist:
       tags:
@@ -13,6 +14,7 @@
   abstract: true
   categories: [ HideSpawnMenu ]
   components:
+  - type: AccessReader
   - type: Mech
     equipmentWhitelist:
       tags:
@@ -23,6 +25,7 @@
   abstract: true
   categories: [ HideSpawnMenu ]
   components:
+  - type: AccessReader
   - type: Mech
     equipmentWhitelist:
       tags:
@@ -43,6 +46,8 @@
   abstract: true
   categories: [ HideSpawnMenu ]
   components:
+  - type: AccessReader
+    access: [["Security"]]
   - type: Mech
     firstStart: true
     lowPowerSound:
@@ -55,6 +60,8 @@
   abstract: true
   categories: [ HideSpawnMenu ]
   components:
+  - type: AccessReader
+    access: [["SyndicateAgent"], ["NuclearOperative"]]
   - type: Mech
     firstStart: true
     lowPowerSound:

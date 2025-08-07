@@ -2,6 +2,7 @@ using System.Linq;
 using Content.Shared._Forge.ForgeVars;
 using Content.Shared._Forge.Mech; // Corvax-Forge
 using Content.Shared.Access.Components;
+using Content.Shared.Access.Systems; // Corvax-Forge
 using Content.Shared.ActionBlocker;
 using Content.Shared.Actions;
 using Content.Shared.Destructible;
@@ -43,6 +44,7 @@ namespace Content.Shared.Mech.EntitySystems;
 /// </summary>
 public abstract class SharedMechSystem : EntitySystem
 {
+    [Dependency] private readonly AccessReaderSystem _accessReader = default!; // Corvax-Forge
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
@@ -184,6 +186,14 @@ public abstract class SharedMechSystem : EntitySystem
         else
             _audioSystem.PlayEntity(component.CriticalDamageSound, pilot, mech);
 
+        UpdateActions(mech, pilot, component);
+    }
+    
+    private void UpdateActions(EntityUid mech, EntityUid pilot, MechComponent? component = null)
+    {
+        if (!Resolve(mech, ref component))
+            return;
+
         if (_net.IsClient)
             return;
 
@@ -196,6 +206,10 @@ public abstract class SharedMechSystem : EntitySystem
             _actions.AddAction(pilot, ref component.MechToggleInternalsActionEntity, component.MechToggleInternalsAction, mech); // Corvax-Forge
         if (HasComp<MechThrustersComponent>(mech))
             _actions.AddAction(pilot, ref component.MechToggleThrustersActionEntity, component.MechToggleThrustersAction, mech); // Corvax-Forge
+        var equipment = new List<EntityUid>(component.EquipmentContainer.ContainedEntities);
+        foreach (var ent in equipment)
+            if (TryComp<MechEquipmentActionComponent>(ent, out var actionComp))
+                _actions.AddAction(pilot, ref actionComp.EquipmentActionEntity, actionComp.EquipmentAction, ent);
 
         RaiseEquipmentEquippedEvent((mech, component), pilot); // Frontier (note: must send pilot separately, not yet in their seat)
     }
@@ -209,10 +223,12 @@ public abstract class SharedMechSystem : EntitySystem
 
         _actions.RemoveProvidedActions(pilot, mech);
 
-        // Frontier
-        if (TryComp<MechComponent>(mech, out var mechComp) && mechComp.CurrentSelectedEquipment != null)
-            _actions.RemoveProvidedActions(pilot, mechComp.CurrentSelectedEquipment.Value);
-        // End Frontier
+        if (!TryComp<MechComponent>(mech, out var mechComp))
+            return;
+        var equipment = new List<EntityUid>(mechComp.EquipmentContainer.ContainedEntities);
+        foreach (var ent in equipment)
+            if (TryComp<MechEquipmentActionComponent>(ent, out var actionComp))
+                _actions.RemoveProvidedActions(pilot, ent);
     }
 
     /// <summary>
@@ -285,10 +301,10 @@ public abstract class SharedMechSystem : EntitySystem
     /// <summary>
     /// Inserts an equipment item into the mech.
     /// </summary>
-    /// <param name="uid"></param>
-    /// <param name="toInsert"></param>
-    /// <param name="component"></param>
-    /// <param name="equipmentComponent"></param>
+    /// <param name="uid"> Mech </param>
+    /// <param name="toInsert"> Equipment what inserted </param>
+    /// <param name="component"> Mech Component </param>
+    /// <param name="equipmentComponent"> Equipment Component </param>
     public void InsertEquipment(EntityUid uid, EntityUid toInsert, MechComponent? component = null,
         MechEquipmentComponent? equipmentComponent = null)
     {
@@ -304,11 +320,21 @@ public abstract class SharedMechSystem : EntitySystem
         if (_whitelistSystem.IsWhitelistFail(component.EquipmentWhitelist, toInsert))
             return;
 
+        if (!TryComp<MetaDataComponent>(toInsert, out var toInsertMeta))
+            return;
+
+        var equipment = new List<EntityUid>(component.EquipmentContainer.ContainedEntities);
+        foreach (var ent in equipment)
+            if (TryComp<MetaDataComponent>(ent, out var entMeta) && entMeta.EntityPrototype == toInsertMeta.EntityPrototype)
+                return;
+
         equipmentComponent.EquipmentOwner = uid;
         _container.Insert(toInsert, component.EquipmentContainer);
         var ev = new MechEquipmentInsertedEvent(uid);
         RaiseLocalEvent(toInsert, ref ev);
         UpdateUserInterface(uid, component);
+        if (component.PilotSlot.ContainedEntity != null)
+            UpdateActions(uid, component.PilotSlot.ContainedEntity.Value, component);
     }
 
     /// <summary>
@@ -439,6 +465,12 @@ public abstract class SharedMechSystem : EntitySystem
         if (!Resolve(uid, ref component))
             return false;
 
+        if (TryComp<AccessReaderComponent>(uid, out var access) && !_accessReader.IsAllowed(toInsert, uid, access))
+        {
+            _popup.PopupEntity(Loc.GetString("mech-no-access-popup"), uid);
+            return false;
+        }
+
         return IsEmpty(component) && _actionBlocker.CanMove(toInsert);
     }
 
@@ -485,8 +517,8 @@ public abstract class SharedMechSystem : EntitySystem
     /// <summary>
     /// Attempts to eject the current pilot from the mech
     /// </summary>
-    /// <param name="uid"></param>
-    /// <param name="component"></param>
+    /// <param name="uid"> mech </param>
+    /// <param name="component"> mech component </param>
     /// <param name="pilot">The pilot to eject</param>
     /// <returns>Whether or not the pilot was ejected.</returns>
     public bool TryEject(EntityUid uid, MechComponent? component = null, EntityUid? pilot = null) // Corvax-Forge edit
@@ -605,7 +637,7 @@ public abstract class SharedMechSystem : EntitySystem
         RaiseLocalEvent(uid, ev);
     }
 
-    protected void UpdateAppearance(EntityUid uid, MechComponent? component = null,
+    public void UpdateAppearance(EntityUid uid, MechComponent? component = null,
         AppearanceComponent? appearance = null)
     {
         if (!Resolve(uid, ref component, ref appearance, false))

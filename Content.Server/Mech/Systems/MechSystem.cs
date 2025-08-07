@@ -24,6 +24,7 @@ using Content.Shared.Toggleable; // Frontier
 using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
 using Content.Shared.Mech.EntitySystems;
+using Content.Shared.Mech.Equipment.Components; // Corvax-Forge
 using Content.Shared.Movement.Components; // Corvax-Forge
 using Content.Shared.Movement.Events;
 using Content.Shared.Popups;
@@ -50,7 +51,6 @@ namespace Content.Server.Mech.Systems;
 /// <inheritdoc/>
 public sealed partial class MechSystem : SharedMechSystem
 {
-    [Dependency] private readonly TagSystem _tag = default!; // Corvax-Forge
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
     [Dependency] private readonly SharedAudioSystem _audioSystem = default!; // Corvax-Forge
@@ -67,7 +67,6 @@ public sealed partial class MechSystem : SharedMechSystem
     [Dependency] private readonly SharedPointLightSystem _light = default!; // Corvax-Forge
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
     [Dependency] protected readonly IGameTiming Timing = default!;
-    [Dependency] private readonly GasTankSystem _gasTank = default!; // Corvax-Forge
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -77,7 +76,9 @@ public sealed partial class MechSystem : SharedMechSystem
         SubscribeLocalEvent<MechComponent, ToggleActionEvent>(OnToggleLightEvent); // Corvax-Forge
         SubscribeLocalEvent<MechComponent, MechToggleThrustersEvent>(OnMechToggleThrusters); // Corvax-Forge
         SubscribeLocalEvent<MechComponent, InteractUsingEvent>(OnInteractUsing);
-        SubscribeLocalEvent<MechComponent, EntInsertedIntoContainerMessage>(OnInsertBattery);
+        // SubscribeLocalEvent<MechComponent, EntInsertedIntoContainerMessage>(OnInsertBattery);
+        // SubscribeLocalEvent<MechComponent, EntInsertedIntoContainerMessage>(OnInsertGasTank);
+        SubscribeLocalEvent<MechComponent, EntInsertedIntoContainerMessage>(OnInsertEquipment); // Corvax-Forge    
         SubscribeLocalEvent<MechComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<MechComponent, GetVerbsEvent<AlternativeVerb>>(OnAlternativeVerb);
         SubscribeLocalEvent<MechComponent, MechOpenUiEvent>(OnOpenUi);
@@ -86,7 +87,6 @@ public sealed partial class MechSystem : SharedMechSystem
         SubscribeLocalEvent<MechComponent, ChargeChangedEvent>(OnChargeChanged); // Corvax-Forge
         SubscribeLocalEvent<MechComponent, MechEntryEvent>(OnMechEntry);
         SubscribeLocalEvent<MechComponent, MechExitEvent>(OnMechExit);
-        SubscribeLocalEvent<MechComponent, EmpPulseEvent>(OnEmpPulse); // Corvax-Forge
 
         SubscribeLocalEvent<MechComponent, DamageChangedEvent>(OnDamageChanged);
         SubscribeLocalEvent<MechComponent, MechEquipmentRemoveMessage>(OnRemoveEquipmentMessage);
@@ -113,29 +113,6 @@ public sealed partial class MechSystem : SharedMechSystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        var lightDraw = EntityQueryEnumerator<PowerCellDrawComponent, MechComponent>();
-
-        while (lightDraw.MoveNext(out var uid, out var comp, out var mechComp))
-        {
-            if (!mechComp.Light)
-                continue;
-
-            if (Timing.CurTime < comp.NextUpdateTime)
-                continue;
-
-            comp.NextUpdateTime += comp.Delay;
-
-            if (mechComp.BatterySlot.ContainedEntity == null
-                || !TryComp<BatteryComponent>(mechComp.BatterySlot.ContainedEntity.Value, out var battery))
-                continue;
-
-            if (!_battery.TryUseCharge(mechComp.BatterySlot.ContainedEntity.Value, comp.DrawRate))
-                continue;
-
-            var ev = new ChargeChangedEvent(battery.CurrentCharge, battery.MaxCharge);
-            RaiseLocalEvent(uid, ref ev);
-            UpdateUserInterface(uid, mechComp);
-        }
 
         var thrustDraw = EntityQueryEnumerator<MechThrustersComponent, MechComponent>();
 
@@ -235,12 +212,6 @@ public sealed partial class MechSystem : SharedMechSystem
 
         UpdateAppearance(uid, component);
     }
-
-    private void OnEmpPulse(EntityUid uid, MechComponent component, EmpPulseEvent args)
-    {
-        Dirty(uid, component);
-        UpdateUserInterface(uid, component);
-    }
     // Corvax-Forge end
 
     private void OnMechCanMoveEvent(EntityUid uid, MechComponent component, UpdateCanMoveEvent args)
@@ -261,13 +232,12 @@ public sealed partial class MechSystem : SharedMechSystem
             return;
         }
 
-        if (component.GasTankSlot.ContainedEntity == null && _tag.HasTag(args.Used, "MechAirTank"))
+        if(component.GasTankSlot.ContainedEntity==null && TryComp<GasTankComponent>(args.Used, out var gasTank))
         {
-            _actionBlocker.UpdateCanMove(uid);
-            return;
+            InsertGasTank(uid, args.Used, component, gasTank);
         }
 
-        if (_toolSystem.HasQuality(args.Used, "Prying") && component.BatterySlot.ContainedEntity != null)
+        if (_toolSystem.HasQuality(args.Used, "Prying"))
         {
             if (component.BatterySlot.ContainedEntity != null)
             {
@@ -292,16 +262,25 @@ public sealed partial class MechSystem : SharedMechSystem
         }
     }
 
-    private void OnInsertBattery(EntityUid uid, MechComponent component, EntInsertedIntoContainerMessage args)
+    private void OnInsertEquipment(EntityUid uid, MechComponent component, EntInsertedIntoContainerMessage args)
     {
-        if (args.Container != component.BatterySlot || !TryComp<BatteryComponent>(args.Entity, out var battery))
+        if(!(args.Container != component.BatterySlot || !TryComp<BatteryComponent>(args.Entity, out var battery)))
+        {
+            component.Energy = battery.CurrentCharge;
+            component.MaxEnergy = battery.MaxCharge;
+
+            Dirty(uid, component);
+            _actionBlocker.UpdateCanMove(uid);
+        }
+        else if(!(args.Container != component.GasTankSlot || !TryComp<GasTankComponent>(args.Entity, out var gasTank)))
+        {
+            Dirty(uid, component);
+            _actionBlocker.UpdateCanMove(uid);
+        }
+        else
+        {
             return;
-
-        component.Energy = battery.CurrentCharge;
-        component.MaxEnergy = battery.MaxCharge;
-
-        Dirty(uid, component);
-        _actionBlocker.UpdateCanMove(uid);
+        }
     }
 
     private void OnRemoveBattery(EntityUid uid, MechComponent component, RemoveBatteryEvent args)
@@ -319,9 +298,9 @@ public sealed partial class MechSystem : SharedMechSystem
     {
         if (args.Cancelled || args.Handled)
             return;
-        
+
         _container.EmptyContainer(component.GasTankSlot);
-        
+
         args.Handled = true;
     }
 
@@ -583,6 +562,19 @@ public sealed partial class MechSystem : SharedMechSystem
         }
         _actionBlocker.UpdateCanMove(uid);
         return true;
+    }
+
+    public void InsertGasTank(EntityUid uid, EntityUid toInsert, MechComponent? component = null, GasTankComponent? gasTank = null)
+    {
+        if (!Resolve(uid, ref component, false))
+            return;
+
+        if (!Resolve(toInsert, ref gasTank, false))
+            return;
+        
+        _container.Insert(toInsert, component.GasTankSlot);
+        _actionBlocker.UpdateCanMove(uid);
+        Dirty(uid, component);
     }
 
     public void InsertBattery(EntityUid uid, EntityUid toInsert, MechComponent? component = null, BatteryComponent? battery = null)
