@@ -106,7 +106,7 @@
         node: start
       - !type:DoActsBehavior
         acts: ["Destruction"]
-  - type: PointLight # Corvax-Forge
+  - type: PointLight # Forge-Change
     mask: /Textures/Effects/LightMasks/cone.png
     autoRot: true
     radius: 6
@@ -126,7 +126,7 @@
 # Ripley MK-I
 - type: entity
   id: MechRipley
-  parent: [ BaseMech, IndustrialMech ] # Corvax-Forge: +IndustrialMech
+  parent: [ BaseMech, IndustrialMech ] # Forge-Change: +IndustrialMech
   name: Ripley APLU
   description: Versatile and lightly armored, the Ripley is useful for almost any heavy work scenario. The "APLU" stands for Autonomous Power Loading Unit.
   components:
@@ -170,7 +170,7 @@
 
 # H.O.N.K.
 - type: entity
-  parent: [ BaseMech, SpecialMech ] # Corvax-Forge: +SpecialMech
+  parent: [ BaseMech, SpecialMech ] # Forge-Change: +SpecialMech
   id: MechHonker
   name: H.O.N.K.
   description: "Produced by \"Tyranny of Honk, INC\", this exosuit is designed as heavy clown-support. Used to spread the fun and joy of life. HONK!"
@@ -188,12 +188,12 @@
       params:
         variation: 0.17
   - type: Mech
-    maxEquipmentAmount: 3 # Corvax-Forge
+    maxEquipmentAmount: 3 # Forge-Change
     baseState: honker
     openState: honker-open
     brokenState: honker-broken
     mechToPilotDamageMultiplier: 0.5
-    airtight: true # Corvax-Forge
+    airtight: true # Forge-Change
     pilotWhitelist:
       components:
       - HumanoidAppearance
@@ -201,18 +201,18 @@
 - type: entity
   parent: MechHonker
   id: MechHonkerBattery
-  suffix: Battery, Air # Corvax-Forge: +Air
+  suffix: Battery, Air # Forge-Change: +Air
   components:
   - type: ContainerFill
     containers:
       mech-battery-slot:
       - PowerCellHigh
-      mech-gas-tank-slot: # Corvax-Forge
+      mech-gas-tank-slot: # Forge-Change
       - MechAirTankFilled
 
 # HAMTR
 - type: entity
-  parent: [ BaseMech, SmallMech ] # Corvax-Forge: +SmallMech
+  parent: [ BaseMech, SmallMech ] # Forge-Change: +SmallMech
   id: MechHamtr
   name: HAMTR
   description: "An experimental mech which uses a brain–computer interface to connect directly to a hamsters brain."

@@ -24,7 +24,7 @@ public sealed partial class MechEquipmentComponent : Component
     [ViewVariables] public EntityUid? EquipmentOwner;
 }
 
-// Corvax-Forge start
+// Forge-Change-Start
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class MechEquipmentActionComponent : Component
 {
@@ -41,7 +41,7 @@ public sealed partial class MechEquipmentActionComponent : Component
     
     [DataField] public EntityUid? EquipmentActionEntity;
 }
-// Corvax-Forge end
+// Forge-Change-End
 
 /// <summary>
 /// Raised on the equipment when the installation is finished successfully

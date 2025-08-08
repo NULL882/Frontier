@@ -15,21 +15,21 @@ namespace Content.Shared.Mech.Components;
 public sealed partial class MechComponent : Component
 {
     /// <summary>
-    /// Corvax-Forge: Whether or not an emag disables it.
+    /// Forge-Change: Whether or not an emag disables it.
     /// </summary>
     [DataField("breakOnEmag")]
     [AutoNetworkedField]
     public bool BreakOnEmag = true;
 
     /// <summary>
-    /// Corvax-Forge: is the mech lights are toggled?
+    /// Forge-Change: is the mech lights are toggled?
     /// </summary>
     [DataField("light")]
     [AutoNetworkedField]
     public bool Light = false;
 
     /// <summary>
-    /// Corvax-Forge: is the mech internals enabled?
+    /// Forge-Change: is the mech internals enabled?
     /// </summary>
     [DataField("internals")]
     [AutoNetworkedField]
@@ -71,7 +71,7 @@ public sealed partial class MechComponent : Component
     public readonly string BatterySlotId = "mech-battery-slot";
 
     /// <summary>
-    /// Corvax-Forge: The slot the gas tank is stored in.
+    /// Forge-Change: The slot the gas tank is stored in.
     /// </summary>
     [ViewVariables]
     public ContainerSlot GasTankSlot = default!;
@@ -176,11 +176,11 @@ public sealed partial class MechComponent : Component
     [DataField]
     public EntProtoId MechEjectAction = "ActionMechEject";
     [DataField]
-    public EntProtoId MechToggleLightAction = "ActionMechToggleLights"; // Corvax-Forge
+    public EntProtoId MechToggleLightAction = "ActionMechToggleLights"; // Forge-Change
     [DataField]
-    public EntProtoId MechToggleInternalsAction = "ActionMechToggleInternals"; // Corvax-Forge
+    public EntProtoId MechToggleInternalsAction = "ActionMechToggleInternals"; // Forge-Change
     [DataField]
-    public EntProtoId MechToggleThrustersAction = "ActionMechToggleThrusters"; // Corvax-Forge
+    public EntProtoId MechToggleThrustersAction = "ActionMechToggleThrusters"; // Forge-Change
     #endregion
 
     #region Visualizer States
@@ -192,7 +192,7 @@ public sealed partial class MechComponent : Component
     public string? BrokenState;
     #endregion
 
-    // Corvax-Forge start
+    // Forge-Change-Start
     #region Sounds
     [DataField]
     public SoundSpecifier ToggleLightSound = new SoundPathSpecifier("/Audio/Items/flashlight_pda.ogg");
@@ -215,14 +215,14 @@ public sealed partial class MechComponent : Component
     [DataField]
     public bool PlayIntegritySound = true;
     #endregion
-    // Corvax-Forge end
+    // Forge-Change-End
 
     [DataField] public EntityUid? MechCycleActionEntity;
     [DataField] public EntityUid? MechUiActionEntity;
     [DataField] public EntityUid? MechEjectActionEntity;
-    [DataField] public EntityUid? MechToggleLightActionEntity; // Corvax-Forge
-    [DataField] public EntityUid? MechToggleInternalsActionEntity; // Corvax-Forge
-    [DataField] public EntityUid? MechToggleThrustersActionEntity; // Corvax-Forge
+    [DataField] public EntityUid? MechToggleLightActionEntity; // Forge-Change
+    [DataField] public EntityUid? MechToggleInternalsActionEntity; // Forge-Change
+    [DataField] public EntityUid? MechToggleThrustersActionEntity; // Forge-Change
 
     // Frontier: extra fields
     /// <summary>

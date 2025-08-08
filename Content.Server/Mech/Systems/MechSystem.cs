@@ -1,31 +1,31 @@
 using System.Linq;
 using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
-using Content.Server.Atmos.Piping.Components; // Corvax-Forge
-using Content.Server.Body.Systems; // Corvax-Forge
-using Content.Server.Hands.Systems; // Corvax-Forge
-using Content.Server.Emp; // Corvax-Forge
+using Content.Server.Atmos.Piping.Components; // Forge-Change
+using Content.Server.Body.Systems; // Forge-Change
+using Content.Server.Hands.Systems; // Forge-Change
+using Content.Server.Emp; // Forge-Change
 using Content.Server.Mech.Components;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
-using Content.Server.PowerCell; // Corvax-Forge
-using Content.Shared.PowerCell; // Corvax-Forge
+using Content.Server.PowerCell; // Forge-Change
+using Content.Shared.PowerCell; // Forge-Change
 using Content.Shared.ActionBlocker;
 using Content.Shared.Actions; // Frontier
-using Content.Shared.Atmos; // Corvax-Forge
-using Content.Shared.Atmos.Components; // Corvax-Forge
+using Content.Shared.Atmos; // Forge-Change
+using Content.Shared.Atmos.Components; // Forge-Change
 using Content.Shared.Damage;
 using Content.Shared.DoAfter;
-using Content.Shared.Examine; // Corvax-Forge
+using Content.Shared.Examine; // Forge-Change
 using Content.Shared.FixedPoint;
-using Content.Shared.Hands.Components; // Corvax-Forge
+using Content.Shared.Hands.Components; // Forge-Change
 using Content.Shared.Interaction;
 using Content.Shared.Toggleable; // Frontier
 using Content.Shared.Mech;
 using Content.Shared.Mech.Components;
 using Content.Shared.Mech.EntitySystems;
-using Content.Shared.Mech.Equipment.Components; // Corvax-Forge
-using Content.Shared.Movement.Components; // Corvax-Forge
+using Content.Shared.Mech.Equipment.Components; // Forge-Change
+using Content.Shared.Movement.Components; // Forge-Change
 using Content.Shared.Movement.Events;
 using Content.Shared.Popups;
 using Content.Shared.Tag;
@@ -38,7 +38,7 @@ using Robust.Server.GameObjects;
 using Robust.Shared.Audio.Systems; // Frontier
 using Robust.Shared.GameObjects; // Frontier
 using Robust.Shared.Containers;
-using Robust.Shared.Timing; // Corvax-Forge
+using Robust.Shared.Timing; // Forge-Change
 using Robust.Shared.Player;
 using Content.Shared.Whitelist;
 using Content.Shared.Mobs.Components; // Frontier
@@ -53,8 +53,8 @@ public sealed partial class MechSystem : SharedMechSystem
 {
     [Dependency] private readonly ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
-    [Dependency] private readonly SharedAudioSystem _audioSystem = default!; // Corvax-Forge
-    [Dependency] private readonly SharedActionsSystem _actions = default!; // Corvax-Forge
+    [Dependency] private readonly SharedAudioSystem _audioSystem = default!; // Forge-Change
+    [Dependency] private readonly SharedActionsSystem _actions = default!; // Forge-Change
     [Dependency] private readonly BatterySystem _battery = default!;
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
@@ -64,7 +64,7 @@ public sealed partial class MechSystem : SharedMechSystem
     [Dependency] private readonly EntityWhitelistSystem _whitelistSystem = default!;
     [Dependency] private readonly SharedToolSystem _toolSystem = default!;
     [Dependency] private readonly NpcFactionSystem _npcFaction = default!; // Frontier
-    [Dependency] private readonly SharedPointLightSystem _light = default!; // Corvax-Forge
+    [Dependency] private readonly SharedPointLightSystem _light = default!; // Forge-Change
     [Dependency] private readonly PowerCellSystem _powerCell = default!;
     [Dependency] protected readonly IGameTiming Timing = default!;
 
@@ -73,18 +73,18 @@ public sealed partial class MechSystem : SharedMechSystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<MechComponent, ToggleActionEvent>(OnToggleLightEvent); // Corvax-Forge
-        SubscribeLocalEvent<MechComponent, MechToggleThrustersEvent>(OnMechToggleThrusters); // Corvax-Forge
+        SubscribeLocalEvent<MechComponent, ToggleActionEvent>(OnToggleLightEvent); // Forge-Change
+        SubscribeLocalEvent<MechComponent, MechToggleThrustersEvent>(OnMechToggleThrusters); // Forge-Change
         SubscribeLocalEvent<MechComponent, InteractUsingEvent>(OnInteractUsing);
         // SubscribeLocalEvent<MechComponent, EntInsertedIntoContainerMessage>(OnInsertBattery);
         // SubscribeLocalEvent<MechComponent, EntInsertedIntoContainerMessage>(OnInsertGasTank);
-        SubscribeLocalEvent<MechComponent, EntInsertedIntoContainerMessage>(OnInsertEquipment); // Corvax-Forge    
+        SubscribeLocalEvent<MechComponent, EntInsertedIntoContainerMessage>(OnInsertEquipment); // Forge-Change    
         SubscribeLocalEvent<MechComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<MechComponent, GetVerbsEvent<AlternativeVerb>>(OnAlternativeVerb);
         SubscribeLocalEvent<MechComponent, MechOpenUiEvent>(OnOpenUi);
         SubscribeLocalEvent<MechComponent, RemoveBatteryEvent>(OnRemoveBattery);
-        SubscribeLocalEvent<MechComponent, RemoveGasTankEvent>(OnRemoveGasTank); // Corvax-Forge
-        SubscribeLocalEvent<MechComponent, ChargeChangedEvent>(OnChargeChanged); // Corvax-Forge
+        SubscribeLocalEvent<MechComponent, RemoveGasTankEvent>(OnRemoveGasTank); // Forge-Change
+        SubscribeLocalEvent<MechComponent, ChargeChangedEvent>(OnChargeChanged); // Forge-Change
         SubscribeLocalEvent<MechComponent, MechEntryEvent>(OnMechEntry);
         SubscribeLocalEvent<MechComponent, MechExitEvent>(OnMechExit);
 
@@ -98,7 +98,7 @@ public sealed partial class MechSystem : SharedMechSystem
         SubscribeLocalEvent<MechPilotComponent, InhaleLocationEvent>(OnInhale);
         SubscribeLocalEvent<MechPilotComponent, ExhaleLocationEvent>(OnExhale);
         SubscribeLocalEvent<MechPilotComponent, AtmosExposedGetAirEvent>(OnExpose);
-        SubscribeLocalEvent<MechAirComponent, AtmosDeviceUpdateEvent>(OnAirUpdate); // Corvax-Forge
+        SubscribeLocalEvent<MechAirComponent, AtmosDeviceUpdateEvent>(OnAirUpdate); // Forge-Change
 
         SubscribeLocalEvent<MechAirComponent, GetFilterAirEvent>(OnGetFilterAir);
 
@@ -109,7 +109,7 @@ public sealed partial class MechSystem : SharedMechSystem
     }
 
 
-    // Corvax-Forge start
+    // Forge-Change-Start
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -212,7 +212,7 @@ public sealed partial class MechSystem : SharedMechSystem
 
         UpdateAppearance(uid, component);
     }
-    // Corvax-Forge end
+    // Forge-Change-End
 
     private void OnMechCanMoveEvent(EntityUid uid, MechComponent component, UpdateCanMoveEvent args)
     {

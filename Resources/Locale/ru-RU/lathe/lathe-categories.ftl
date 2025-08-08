@@ -9,7 +9,7 @@ lathe-category-weapons = Вооружение
 # Frontier lines below
 lathe-category-evasuits = ЕВА
 lathe-category-armor-nf = Броня
-# Corvax-Forge
+# Forge-Change
 lathe-category-smechs = Небольшие экзокостюмы
 lathe-category-ripley = Рипли
 lathe-category-honker = ХОНК

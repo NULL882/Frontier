@@ -169,7 +169,7 @@ public sealed partial class GunSystem : SharedGunSystem
 
         var entity = entityNull.Value;
 
-        if (TryComp<MechPilotComponent>(entity, out var mechPilot)) // Corvax-Forge
+        if (TryComp<MechPilotComponent>(entity, out var mechPilot)) // Forge-Change
         {
             entity = mechPilot.Mech;
         }

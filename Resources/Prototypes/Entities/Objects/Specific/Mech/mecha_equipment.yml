@@ -12,14 +12,14 @@
   - type: GuideHelp
     guides:
     - Robotics
-  - type: ClothingSpeedModifier # Corvax-Forge
+  - type: ClothingSpeedModifier # Forge-Change
     walkModifier: 0.25
     sprintModifier: 0.25
-  - type: MultiHandedItem # Corvax-Forge
+  - type: MultiHandedItem # Forge-Change
 
 - type: entity
   id: MechEquipmentGrabber
-  parent: [ BaseMechEquipment, IndustrialMechEquipment ] # Corvax-Forge: +IndustrialMechEquipment
+  parent: [ BaseMechEquipment, IndustrialMechEquipment ] # Forge-Change: +IndustrialMechEquipment
   name: hydraulic clamp
   description: Gives the mech the ability to grab things and drag them around.
   components:
@@ -41,7 +41,7 @@
 
 - type: entity
   id: MechEquipmentGrabberSmall
-  parent: [ BaseMechEquipment, SmallMechEquipment ] # Corvax-Forge: +SmallMechEquipment
+  parent: [ BaseMechEquipment, SmallMechEquipment ] # Forge-Change: +SmallMechEquipment
   name: small hydraulic clamp
   description: Gives the mech the ability to grab things and drag them around.
   components:

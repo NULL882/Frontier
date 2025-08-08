@@ -86,7 +86,7 @@
   query:
     - !type:NearbyHostilesQuery
   considerations:
-    # Corvax-Forge - check is dead instead so we can target non-living stuff
+    # Forge-Change - check is dead instead so we can target non-living stuff
     - !type:TargetIsDeadCon
       curve: !type:InverseBoolCurve
     - !type:TargetDistanceCon
@@ -105,7 +105,7 @@
   query:
     - !type:NearbyHostilesQuery
   considerations:
-    # Corvax-Forge - check is dead instead so we can target non-living stuff
+    # Forge-Change - check is dead instead so we can target non-living stuff
     - !type:TargetIsDeadCon
       curve: !type:InverseBoolCurve
     - !type:TargetDistanceCon
@@ -188,7 +188,7 @@
   query:
     - !type:NearbyHostilesQuery
   considerations:
-    # Corvax-Forge - check is dead instead so we can target non-living stuff
+    # Forge-Change - check is dead instead so we can target non-living stuff
     - !type:TargetIsDeadCon
       curve: !type:InverseBoolCurve
     - !type:TargetIsCritCon

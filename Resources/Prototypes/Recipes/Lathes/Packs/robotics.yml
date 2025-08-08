@@ -62,7 +62,7 @@
   - HamtrLLeg
   - HamtrRLeg
   - VimHarness
-  # Corvax-Forge start
+  # Forge-Change-Start
   - ClarkeHarness
   - ClarkeHead
   - ClarkeLArm
@@ -82,7 +82,7 @@
   - GygaxLLeg
   - GygaxRArm
   - GygaxRLeg
-  # Corvax-Forge end
+  # Forge-Change-End
 
 - type: latheRecipePack
   id: MechEquipment
@@ -91,7 +91,7 @@
     - MechEquipmentHorn
     - MechEquipmentGrabberSmall
     - MechEquipmentFork # Frontier
-    - MechEquipmentHonkerBananaMortar # Corvax-Forge
-    - MechEquipmentHonkerMousetrapMortar # Corvax-Forge
-    - MechEquipmentDrill # Corvax-Forge
-    - MechEquipmentDrillDiamond # Corvax-Forge
+    - MechEquipmentHonkerBananaMortar # Forge-Change
+    - MechEquipmentHonkerMousetrapMortar # Forge-Change
+    - MechEquipmentDrill # Forge-Change
+    - MechEquipmentDrillDiamond # Forge-Change
