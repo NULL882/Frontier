@@ -17,6 +17,7 @@
         doAfter: 1
 
       - material: Cable
+        amount: 5
         completed:
         - !type:VisualizerDataInt
           key: "enum.MechAssemblyVisuals.State"

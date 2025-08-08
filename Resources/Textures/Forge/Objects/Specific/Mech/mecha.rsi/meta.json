@@ -21,6 +21,16 @@
           0.2
         ]
       ]
+    },
+    {
+      "name": "blackpearal",
+      "directions": 4
+    },
+    {
+      "name": "blackpearal-broken"
+    },
+    {
+      "name": "blackpearal-open"
     }
   ]
 }

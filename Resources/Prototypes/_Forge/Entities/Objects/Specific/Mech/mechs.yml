@@ -515,7 +515,7 @@
 # Dark Gygax
 - type: entity
   id: MechGygaxSyndie
-  parent: [ BaseMech, CombatMech, SyndieMech ]
+  parent: [ BaseMech, CombatMech, SyndieMech, BaseC3SyndicateContraband ]
   name: Dark Gygax
   description: A modified Gygax used for nefarious purposes. On the back of the armor plate there is an inscription "Cybersun Inc."
   components:
@@ -586,7 +586,7 @@
 # Mauler
 - type: entity
   id: MechMaulerSyndie
-  parent: [ BaseMech, CombatMech, SyndieMech ]
+  parent: [ BaseMech, CombatMech, SyndieMech, BaseC3SyndicateContraband ]
   name: Mauler
   description: A modified Marauder used by the Syndicate that's not as maneuverable as the Dark Gygax, but it makes up for that in armor and sheer firepower. On the back of the armor plate there is an inscription "Cybersun Inc."
   components:
@@ -607,7 +607,7 @@
     mechToPilotDamageMultiplier: 0.05
     airtight: true
     maxIntegrity: 500
-    maxEquipmentAmount: 5
+    maxEquipmentAmount: 6
     pilotWhitelist:
       components:
         - HumanoidAppearance
@@ -654,3 +654,77 @@
       - WeaponMechCombatShotgun
       - WeaponMechCombatMissileRack6
       - WeaponMechCombatTeslaCannon
+
+# Pirate Combat Mech
+
+# Black Pearal
+- type: entity
+  id: MechGygaxPirate
+  parent: [ BaseMech, CombatMech, SyndieMech, BaseC3PirateContraband ]
+  name: Black Pearal
+  description: Don't look for the NanoTrasen logo on this warship, buddy. This is the Black Pearl, the pride of the Pirate Brotherhood and the nightmare of corporate rats!
+  components:
+  - type: Sprite
+    drawdepth: Mobs
+    noRot: true
+    sprite: Forge/Objects/Specific/Mech/mecha.rsi
+    layers:
+    - map: [ "enum.MechVisualLayers.Base" ]
+      state: blackpearal
+  - type: FootstepModifier
+    footstepSoundCollection:
+      path: /Audio/Mecha/sound_mecha_powerloader_step.ogg
+  - type: Mech
+    baseState: blackpearal
+    openState: blackpearal-open
+    brokenState: blackpearal-broken
+    mechToPilotDamageMultiplier: 0.1
+    airtight: true
+    maxIntegrity: 320
+    maxEquipmentAmount: 4
+    pilotWhitelist:
+      components:
+        - HumanoidAppearance
+  - type: MeleeWeapon
+    hidden: true
+    attackRate: 1
+    damage:
+      types:
+        Blunt: 30
+        Structural: 210
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2
+    baseSprintSpeed: 3.5
+  - type: Damageable
+    damageModifierSet: DarkGygaxArmor
+  - type: MechThrusters
+  - type: Repairable
+    fuelCost: 40
+    doAfterDelay: 22
+  - type: PointLight
+    color: orange
+  - type: AccessReader
+    access: [["Pirate"]]
+
+- type: entity
+  id: MechGygaxPirateBattery
+  parent: MechGygaxPirate
+  suffix: Battery, Air
+  components:
+  - type: ContainerFill
+    containers:
+      mech-battery-slot:
+      - PowerCellHyper
+      mech-gas-tank-slot:
+      - MechAirTankFilled
+
+- type: entity
+  id: MechGygaxPirateFilled
+  parent: MechGygaxPirateBattery
+  suffix: Battery, Filled
+  components:
+  - type: Mech
+    startingEquipment:
+      - WeaponMechChainSword
+      - WeaponMechCombatShotgun
+      - WeaponMechCombatMissileRack8
