@@ -69,7 +69,7 @@
           data: 8
 
       - component: PowerCell
-        name: power cell
+        name: construction-graph-component-power-cell
         store: battery-container
         icon:
           sprite: Objects/Power/power_cells.rsi
@@ -108,7 +108,7 @@
           data: 17
 
       - tag: MechAirTank
-        name: exosuit air tank
+        name: construction-graph-component-exosuit-air-tank
         store: gas-tank-container
         icon:
           sprite: Objects/Specific/Mech/mecha_equipment.rsi

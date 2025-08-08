@@ -12,7 +12,6 @@
     - Pickaxe
     - IndustrialMech
   - type: MeleeWeapon
-    canWideSwing: false
     autoAttack: true
     angle: 0
     wideAnimationRotation: -90
@@ -39,7 +38,6 @@
     - Pickaxe
     - IndustrialMech
   - type: MeleeWeapon
-    canWideSwing: false
     autoAttack: true
     angle: 0
     wideAnimationRotation: -90

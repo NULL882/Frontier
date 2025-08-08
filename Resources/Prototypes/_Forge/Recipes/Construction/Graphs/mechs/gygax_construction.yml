@@ -31,7 +31,7 @@
           data: 3
 
       - tag: GygaxCentralControlModule
-        name: gygax central control module
+        name: construction-graph-component-gygax-central-control
         icon:
           sprite: "Objects/Misc/module.rsi"
           state: "mainboard"
@@ -48,7 +48,7 @@
           data: 5
 
       - tag: GygaxPeripheralsControlModule
-        name: gygax peripherals control module
+        name: construction-graph-component-gygax-peripherals-control
         icon:
           sprite: "Objects/Misc/module.rsi"
           state: id_mod
@@ -65,7 +65,7 @@
           data: 7
 
       - tag: GygaxTargetingControlModule
-        name: gygax weapon control and targeting module
+        name: construction-graph-component-gygax-weapon-control
         icon:
           sprite: "Objects/Misc/module.rsi"
           state: mcontroller
@@ -82,7 +82,7 @@
           data: 9
 
       - tag: CapacitorStockPart
-        name: capacitor
+        name: construction-graph-component-capacitor
         icon:
           sprite: Objects/Misc/stock_parts.rsi
           state: capacitor
@@ -99,7 +99,7 @@
           data: 11
 
       - component: PowerCell
-        name: power cell
+        name: construction-graph-component-power-cell
         store: battery-container
         icon:
           sprite: Objects/Power/power_cells.rsi
@@ -138,7 +138,7 @@
           data: 18
 
       - tag: MechAirTank
-        name: exosuit air tank
+        name: construction-graph-component-exosuit-air-tank
         store: gas-tank-container
         icon:
           sprite: Objects/Specific/Mech/mecha_equipment.rsi
@@ -148,7 +148,7 @@
         doAfter: 1
 
       - tag: GygaxArmor
-        name: gygax armor plates
+        name: construction-graph-component-gygax-armor
         icon:
           sprite: "Forge/Objects/Specific/Mech/gygax_construction.rsi"
           state: gygax_armor
