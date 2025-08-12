@@ -1,0 +1,6 @@
+  - type: latheRecipePack
+    id: NFSalvageTechfabDeprecatedDynamic
+  # Mechs
+    - MechEquipmentDrill
+    - MechEquipmentDrillDiamond
+    - MechEquipmentKineticAccelerator
