@@ -9,6 +9,7 @@ using Content.Server.Mech.Components;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Server.PowerCell; // Forge-Change
+using Content.Shared._Forge.Emp; // Forge-Change
 using Content.Shared.PowerCell; // Forge-Change
 using Content.Shared.ActionBlocker;
 using Content.Shared.Actions; // Frontier
@@ -106,8 +107,8 @@ public sealed partial class MechSystem : SharedMechSystem
         SubscribeLocalEvent<MechAirComponent, GetFilterAirEvent>(OnGetFilterAir);
 
         #region Equipment UI message relays
-        SubscribeLocalEvent<MechComponent, MechGrabberEjectMessage>(ReceiveEquipmentUiMesssages);
-        SubscribeLocalEvent<MechComponent, MechSoundboardPlayMessage>(ReceiveEquipmentUiMesssages);
+        // SubscribeLocalEvent<MechComponent, MechGrabberEjectMessage>(ReceiveEquipmentUiMesssages);    // Forge-Change - Moved to Shared
+        // SubscribeLocalEvent<MechComponent, MechSoundboardPlayMessage>(ReceiveEquipmentUiMesssages);  // Forge-Change - Moved to Shared
         #endregion
     }
 
@@ -282,14 +283,18 @@ public sealed partial class MechSystem : SharedMechSystem
         if (TryComp<WiresPanelComponent>(uid, out var panel) && !panel.Open)
             return;
 
-        if (component.BatterySlot.ContainedEntity == null && TryComp<BatteryComponent>(args.Used, out var battery))
+        if (component.BatterySlot.ContainedEntity == null
+            && TryComp<BatteryComponent>(args.Used, out var battery)
+            && _whitelistSystem.IsWhitelistPass(component.GasTankWhitelist, args.Used))
         {
-            InsertBattery(uid, args.Used, component, battery);
+            InsertBattery(uid, args.Used, component);
             UpdateCanMove(uid, component);
             return;
         }
 
-        if (component.GasTankSlot.ContainedEntity == null && TryComp<GasTankComponent>(args.Used, out var gasTank))
+        if (component.GasTankSlot.ContainedEntity == null
+            && TryComp<GasTankComponent>(args.Used, out var gasTank)
+            && _whitelistSystem.IsWhitelistPass(component.BatteryWhitelist, args.Used))
         {
             InsertGasTank(uid, args.Used, component, gasTank);
         }
@@ -379,7 +384,8 @@ public sealed partial class MechSystem : SharedMechSystem
         // Forge-Change-start
         if (component.BatterySlot.ContainedEntity != null)
         {
-            var mechBattery = EnsureComp<MechBatteryComponent>(component.BatterySlot.ContainedEntity.Value);
+            var mechBattery = EnsureComp<MechBatteryComponent>(
+                              EnsureComp<EmpProtectionComponent>(component.BatterySlot.ContainedEntity.Value).Owner);
             mechBattery.Mech = uid;
         }
         // Forge-Change-end
@@ -563,19 +569,6 @@ public sealed partial class MechSystem : SharedMechSystem
         UpdateUserInterface(uid, component);
     }
 
-    private void ReceiveEquipmentUiMesssages<T>(EntityUid uid, MechComponent component, T args) where T : MechEquipmentUiMessage
-    {
-        var ev = new MechEquipmentUiMessageRelayEvent(args);
-        var allEquipment = new List<EntityUid>(component.EquipmentContainer.ContainedEntities);
-        var argEquip = GetEntity(args.Equipment);
-
-        foreach (var equipment in allEquipment)
-        {
-            if (argEquip == equipment)
-                RaiseLocalEvent(equipment, ev);
-        }
-    }
-
     public override void UpdateUserInterface(EntityUid uid, MechComponent? component = null)
     {
         if (!Resolve(uid, ref component))
@@ -644,23 +637,24 @@ public sealed partial class MechSystem : SharedMechSystem
         Dirty(uid, component);
     }
 
-    public void InsertBattery(EntityUid uid, EntityUid toInsert, MechComponent? component = null, BatteryComponent? battery = null)
+    public void InsertBattery(EntityUid uid, EntityUid toInsert, MechComponent? component = null)
     {
         if (!Resolve(uid, ref component, false))
             return;
 
-        if (!Resolve(toInsert, ref battery, false))
-            return;
-
-        var mechBattery = EnsureComp<MechBatteryComponent>(toInsert); // Forge-Change
+        var mechBattery = EnsureComp<MechBatteryComponent>(toInsert);
         mechBattery.Mech = uid;
+        EnsureComp<EmpProtectionComponent>(toInsert);
 
         _container.Insert(toInsert, component.BatterySlot);
-        component.Energy = battery.CurrentCharge;
-        component.MaxEnergy = battery.MaxCharge;
+
+        if (TryComp<BatteryComponent>(toInsert, out var battery))
+        {
+            component.Energy = battery.CurrentCharge;
+            component.MaxEnergy = battery.MaxCharge;
+        }
 
         UpdateCanMove(uid, component);
-
         Dirty(uid, component);
         UpdateUserInterface(uid, component);
     }
@@ -671,6 +665,7 @@ public sealed partial class MechSystem : SharedMechSystem
             return;
         
         RemComp<MechBatteryComponent>(component.BatterySlot.ContainedEntity.Value); // Forge-Change
+        RemComp<EmpProtectionComponent>(component.BatterySlot.ContainedEntity.Value); // Forge-Change
 
         _container.EmptyContainer(component.BatterySlot);
         component.Energy = 0;
