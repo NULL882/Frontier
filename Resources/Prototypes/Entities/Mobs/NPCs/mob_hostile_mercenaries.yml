@@ -74,7 +74,7 @@
   - type: Gun
     fireRate: 6
     shotsPerBurst: 3
-    burstCooldown: 3
+    burstCooldown: 4.5
     selectedMode: Burst
     availableModes:
       - Burst
@@ -85,8 +85,8 @@
     capacity: 6
     count: 6
   - type: MovementSpeedModifier
-    baseWalkSpeed: 3
-    baseSprintSpeed: 4
+    baseWalkSpeed: 2.5
+    baseSprintSpeed: 3.5
 
 - type: entity
   name: durand

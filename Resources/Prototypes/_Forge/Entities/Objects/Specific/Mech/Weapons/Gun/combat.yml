@@ -64,7 +64,7 @@
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/laser.ogg
   - type: HitscanBatteryAmmoProvider
-    proto: FireDartLaser
+    proto: FiredartLaser
     fireCost: 30
   - type: Battery
     maxCharge: 30
@@ -112,7 +112,7 @@
     soundGunshot:
       path: /Audio/Weapons/Guns/Gunshots/laser.ogg
   - type: HitscanBatteryAmmoProvider
-    proto: NFXrayLaser
+    proto: ForgeXrayLaser
     fireCost: 120
   - type: Appearance
   - type: Battery
