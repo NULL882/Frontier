@@ -82,6 +82,7 @@
           data: 9
 
       - tag: CapacitorStockPart
+        amount: 1
         name: construction-graph-component-capacitor
         store: capacitor-container
         icon:
