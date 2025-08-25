@@ -144,6 +144,14 @@ public sealed partial class MechSystem : SharedMechSystem
         }
     }
 
+    private void AttachBatteryComponents(EntityUid mech, EntityUid battery)
+    {
+        var mechBattery = EnsureComp<MechBatteryComponent>(battery);
+        mechBattery.Mech = mech;
+
+        EnsureComp<EmpProtectionComponent>(battery);
+    }
+
     private void OnItemRemoved(EntityUid mech, MechComponent mechComp, EntRemovedFromContainerMessage args)
     {
         Dirty(mech, mechComp);
@@ -287,7 +295,7 @@ public sealed partial class MechSystem : SharedMechSystem
             && TryComp<BatteryComponent>(args.Used, out var battery)
             && _whitelistSystem.IsWhitelistPass(component.GasTankWhitelist, args.Used))
         {
-            InsertBattery(uid, args.Used, component);
+            InsertBattery(uid, args.Used, component, battery);
             UpdateCanMove(uid, component);
             return;
         }
@@ -329,6 +337,8 @@ public sealed partial class MechSystem : SharedMechSystem
         UpdateUserInterface(uid, component);
         if (!(args.Container != component.BatterySlot || !TryComp<BatteryComponent>(args.Entity, out var battery)))
         {
+            AttachBatteryComponents(uid, args.Entity);
+
             component.Energy = battery.CurrentCharge;
             component.MaxEnergy = battery.MaxCharge;
 
@@ -382,11 +392,9 @@ public sealed partial class MechSystem : SharedMechSystem
         component.Energy = component.MaxEnergy;
 
         // Forge-Change-start
-        if (component.BatterySlot.ContainedEntity != null)
+        if (component.BatterySlot.ContainedEntity is { } battery)
         {
-            var mechBattery = EnsureComp<MechBatteryComponent>(
-                              EnsureComp<EmpProtectionComponent>(component.BatterySlot.ContainedEntity.Value).Owner);
-            mechBattery.Mech = uid;
+            AttachBatteryComponents(uid, battery);
         }
         // Forge-Change-end
 
@@ -637,18 +645,18 @@ public sealed partial class MechSystem : SharedMechSystem
         Dirty(uid, component);
     }
 
-    public void InsertBattery(EntityUid uid, EntityUid toInsert, MechComponent? component = null)
+    public void InsertBattery(EntityUid uid, EntityUid toInsert, MechComponent? component = null, BatteryComponent? battery = null)
     {
         if (!Resolve(uid, ref component, false))
             return;
 
-        var mechBattery = EnsureComp<MechBatteryComponent>(toInsert);
-        mechBattery.Mech = uid;
-        EnsureComp<EmpProtectionComponent>(toInsert);
+        TryComp(toInsert, out battery);
+
+        AttachBatteryComponents(uid, toInsert); // Forge-Change
 
         _container.Insert(toInsert, component.BatterySlot);
 
-        if (TryComp<BatteryComponent>(toInsert, out var battery))
+        if (battery != null)
         {
             component.Energy = battery.CurrentCharge;
             component.MaxEnergy = battery.MaxCharge;
