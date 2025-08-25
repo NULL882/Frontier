@@ -231,7 +231,7 @@
   - MechEquipmentSolarisLaser
   - MechEquipmentMissileRack8
   # Gygax
-  - GygaxArmorPlate
+  - GygaxArmor
   - GygaxHarness
   - GygaxHead
   - GygaxLArm
@@ -242,7 +242,7 @@
   - GygaxPeripheralsElectronics
   - GygaxTargetingElectronics
   # Durand
-  - DurandArmorPlate
+  - DurandArmor
   - DurandHarness
   - DurandHead
   - DurandLArm

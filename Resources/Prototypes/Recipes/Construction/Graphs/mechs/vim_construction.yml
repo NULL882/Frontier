@@ -28,7 +28,6 @@
           sprite: Objects/Specific/Mech/mecha_equipment.rsi
           state: mecha_air_tank
       - tag: CapacitorStockPart
-        amount: 1
         name: construction-graph-component-capacitor
         store: capacitor-container
         icon:
