@@ -1,10 +1,10 @@
 - type: loadout
-  id: CommanderClothingHandsGloves1
+  id: StormtrooperClothingHandsGloves1
   equipment:
     gloves: ClothingHandsGlovesCombat
 
 - type: loadout
-  id: CommanderClothingHandsGloves2
+  id: StormtrooperClothingHandsGloves2
   price: 10000
   equipment:
     gloves: ClothingHandsGlovesCombatSyndicate
