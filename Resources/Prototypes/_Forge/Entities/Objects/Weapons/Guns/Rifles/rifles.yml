@@ -343,3 +343,6 @@
   - type: Appearance
   - type: Clothing
     sprite: Forge/Objects/Weapons/Guns/Rifles/akcy.rsi
+  - type: Item
+    shape:
+    - 0,0,3,1
