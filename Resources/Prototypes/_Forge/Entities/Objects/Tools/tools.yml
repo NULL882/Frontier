@@ -34,7 +34,6 @@
     - id: ClothingHandsGlovesCombat
     - id: ClothingMaskGasContractor
 
-
 - type: entity
   name: электродрель DCN™
   description: Отличная электродрель для ваших нужд. Работает на повышенных мощностях.
