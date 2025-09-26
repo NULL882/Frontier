@@ -128,11 +128,6 @@
     Telecrystal: 16
   categories:
   - ContractorUplinkWeaponry
-  conditions:
-  - !type:StoreWhitelistCondition
-    whitelist:
-      tags:
-      - NukeOpsUplink
 
 - type: listing
   id: ContractorUplinkSniperBundle
@@ -536,7 +531,7 @@
 
 - type: listing
   id: ContractorUplinkIFFCirc
-  name: консоль системы опознавания (консольная плата)
+  name: Консоль системы опознавания (консольная плата)
   description: Плата консоли после сборки которой позволяет управлять параметрами системы опознавания судна.
   productEntity: ComputerIFFCircuitboard
   discountCategory: veryRareDiscounts
@@ -549,7 +544,7 @@
 
 - type: listing
   id: ContractorUplinkJOLCont
-  name: челюсти жизни DCN™
+  name: Челюсти жизни DCN™
   description: Используется для проникновения на чужие шаттлы и аванпоста.
   productEntity: JawsOfLifeContractor
   discountCategory: veryRareDiscounts
@@ -562,7 +557,7 @@
 
 - type: listing
   id: ContractorUplinkToolboxContr
-  name: ящик продвинутых инструментов DCN™
+  name: Ящик продвинутых инструментов DCN™
   description: Зловеще выглядящий ящик для инструментов, наполненный лучшими инструментами.
   productEntity: ToolboxContractorFilled
   discountCategory: veryRareDiscounts
@@ -814,7 +809,7 @@
 
 - type: listing
   id: ContractorUplinkWebbing
-  name: разгрузка DCN™
+  name: Разгрузка DCN™
   description: Ременно-плечевая система тактических ремней, которую носят настоящая элита тёмного интернета.
   productEntity: ClothingBeltContractorWebbing
   discountCategory: veryRareDiscounts
@@ -827,7 +822,7 @@
 
 - type: listing
   id: ContractorUplinkBackpack
-  name: рюкзак DCN™
+  name: Рюкзак DCN™
   description: Удобный рюкзак для ваших предательских вещей. Выглядит стильно и оригинально.
   productEntity: ClothingBackpackContractorForge
   discountCategory: veryRareDiscounts
@@ -840,7 +835,7 @@
 
 - type: listing
   id: ContractorUplinkSatchel
-  name: сумка DCN™
+  name: Сумка DCN™
   description: Приятная на ощупь жёлто-черная сумка. Выглядит стильно и оригинально.
   productEntity: ClothingBackpackSatchelContractor
   discountCategory: veryRareDiscounts
@@ -852,12 +847,25 @@
   - ContractorUplinkWearables
 
 - type: listing
+  id: ContractorUplinkDuffel
+  name: Вещмешок DCN™
+  description: Большой вещмешок для хранения предтательских предметов. Выглядит стильно и оригинально.
+  productEntity: ClothingDuffelContractorForge
+  discountCategory: veryRareDiscounts
+  discountDownTo:
+    Telecrystal: 2
+  cost:
+    Telecrystal: 4
+  categories:
+  - ContractorUplinkWearables
+
+- type: listing
   id: ContractorUplinkEVASuit
-  name: скафандр ВКД от DCN™
+  name: Скафандр ВКД от DCN™
   description: Компактный скафандр и шлем способный помещатся в карманы. Прденазнвачен для защиты от враждебной среды космоса, не более... Имеется фирменный противогаз.
   productEntity: ClothingDuffelContractorForgeEVA
   discountCategory: veryRareDiscounts
-  icon: { sprite: /Textures/Forge/Clothing/OuterClothing/Hardsuits/contractor.rsi, state: icon }
+  icon: { sprite: /Textures/Forge/Clothing/OuterClothing/Hardsuits/contractor_eva.rsi, state: icon }
   discountDownTo:
     Telecrystal: 2
   cost:
@@ -867,7 +875,7 @@
 
 - type: listing
   id: ContractorUplinkStealhSuit
-  name: стелс-экзокостюм DCN™
+  name: Стелс-экзокостюм DCN™
   description: Костюм, оснащенный экзоскелетом вместе со стелс-технологией фазового покрова при полной активации.
   productEntity: ClothingDuffelContractorForgeStealh
   discountCategory: veryRareDiscounts
@@ -881,7 +889,7 @@
 
 - type: listing
   id: ContractorUplinkCombatSuit
-  name: боевой скафандр DCN™
+  name: Боевой скафандр DCN™
   description: Костюм, оснащенный экзоскелетом вместе со стелс-технологией фазового покрова при полной активации.
   productEntity: ClothingOuterHardsuitContractor
   discountCategory: veryRareDiscounts
@@ -895,7 +903,7 @@
 
 - type: listing
   id: ContractorUplinkBootsMag
-  name: магнитные сапоги DCN™
+  name: Магнитные сапоги DCN™
   description: Магнитные ботинки с обратной конструкциыей, которые, по-видимому, основаны на усовершенствованной модели, поскольку обладают более легким магнитным притяжением.
   productEntity: ClothingShoesBootsMagContractor
   discountCategory: veryRareDiscounts
@@ -1067,7 +1075,7 @@
 
 - type: listing
   id: ContractorUplinkNukieSnacks
-  name: коробка закусок Синдиката
+  name: Коробка закусок Синдиката
   description: Подозрительный обед с потенциально взрывоопасным сюрпризом.
   productEntity: HappyHonkNukieSnacks
   cost:
