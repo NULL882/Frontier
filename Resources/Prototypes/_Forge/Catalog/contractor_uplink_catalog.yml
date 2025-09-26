@@ -530,6 +530,16 @@
 # Disruption
 
 - type: listing
+  id: ContractorUplinkRCDAmmo
+  name: Заряд РСУ
+  description: Заряд для боевого РСУ от DCN™.
+  productEntity: RCDAmmo
+  cost:
+    Telecrystal: 1
+  categories:
+  - ContractorUplinkDisruption
+
+- type: listing
   id: ContractorUplinkIFFCirc
   name: Консоль системы опознавания (консольная плата)
   description: Плата консоли после сборки которой позволяет управлять параметрами системы опознавания судна.
