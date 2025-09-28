@@ -30,7 +30,7 @@
   id: SSTsettings
   parent: EventHumanoid
   randomizeName: false
-  speciesBlacklist: 
+  speciesBlacklist:
     - Diona
     - Arachnid
     - Dwarf
@@ -68,7 +68,7 @@
   id: SSTCharliesettings
   parent: EventHumanoid
   randomizeName: false
-  speciesBlacklist: 
+  speciesBlacklist:
     - Diona
     - Arachnid
     - Dwarf
