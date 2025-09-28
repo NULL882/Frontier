@@ -10,4 +10,4 @@
     damageCoefficient: 0.1
   - type: Storage
     grid:
-    - 0,0,8,5
+    - 0,0,9,5
