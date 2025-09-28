@@ -2,7 +2,6 @@
   parent: [ClothingShoesBootsMagBase, BaseJetpack, BaseC3SyndicateContraband, ClothingShoesBootsCombat]
   id: ClothingShoesBootsMagSyndieElite
   name: элитные магнитные сапоги
-  suffix: SST, прототип
   description: Магнитные ботинки с обратной конструкцией, которые, по-видимому, основаны на усовершенствованной модели, поскольку обладают более легким магнитным притяжением. Собственность Мародёров Горлекса.
   components:
   - type: Sprite
@@ -26,6 +25,10 @@
     size: Normal
   - type: Magboots
     magbootsAlert: MagbootsSyndElite
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: StepHeavyBoots
+
 
 - type: alert
   id: MagbootsSyndElite
