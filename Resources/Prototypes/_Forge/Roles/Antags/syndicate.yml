@@ -1,7 +1,7 @@
 - type: entity
   id: RandomHumanoidSpawnerSST
   name: Оперативник УОС
-  suffix: Corvax-Forge, Ударный отряд Синдиката, Штурмовой
+  suffix: Corvax-Forge, Роль Ударный отряд Синдиката, Штурмовой
   components:
     - type: RandomMetadata
       nameSegments: [NamesSyndicateElite]
@@ -15,7 +15,7 @@
 - type: entity
   id: RandomHumanoidSpawnerSSTCharlie
   name: Оперативник УОС
-  suffix: Corvax-Forge, Ударный отряд Синдиката, Чарли
+  suffix: Corvax-Forge, Роль Ударный отряд Синдиката, Чарли
   components:
     - type: RandomMetadata
       nameSegments: [NamesSyndicateElite]
