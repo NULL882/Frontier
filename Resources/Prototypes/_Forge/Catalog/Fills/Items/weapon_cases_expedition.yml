@@ -58,8 +58,8 @@
   components:
   - type: StorageFill
     contents:
-    - id: WeaponSniperDawn
-      amount: 1
+    # - id: WeaponSniperDawn # Закоменчено до починки пушки
+    #   amount: 1
     - id: NFCartridgeRifle60
       amount: 2
     - id: NFAmmunitionBoxRifle60

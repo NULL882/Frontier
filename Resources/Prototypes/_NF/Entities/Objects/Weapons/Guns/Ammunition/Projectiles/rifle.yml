@@ -258,9 +258,10 @@
   - type: Projectile
     damage:
       types:
-        Piercing: 35
+        Piercing: 45
         Structural: 200
     penetrationThreshold: 360
+    ignoreResistances: true
     penetrationDamageTypeRequirement:
     - Structural
 
