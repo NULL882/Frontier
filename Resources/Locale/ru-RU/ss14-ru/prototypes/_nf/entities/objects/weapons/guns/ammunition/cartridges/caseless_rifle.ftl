@@ -1,6 +1,6 @@
 ent-NFCartridgeRifle25 = патрон (.25 автоПП)
     .desc = { ent-BaseCartridgeRifle.desc }
-ent-NFBulletRifle25Overpressure = патрон (.25 автоПП высокоскоростной)
+ent-NFCartridgeRifle25Overpressure = патрон (.25 автоПП высокоскоростной)
     .desc = { ent-BaseCartridgeRifle.desc }
 ent-NFCartridgeRifle25Incendiary = патрон (.25 автоПП зажигательный)
     .desc = { ent-BaseCartridgeRifle.desc }
@@ -9,4 +9,6 @@ ent-NFCartridgeRifle25Uranium = патрон (.25 автоПП урановый)
 ent-NFCartridgeRifle25Practice = патрон (.25 автоПП тренировочный)
     .desc = { ent-BaseCartridgeRifle.desc }
 ent-NFCartridgeRifle25Rubber = патрон (.25 автоПП резиновый)
+    .desc = { ent-BaseCartridgeRifle.desc }
+ent-NFCartridgeRifle25Emp = патрон (.25 автоПП резиновый)
     .desc = { ent-BaseCartridgeRifle.desc }

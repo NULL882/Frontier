@@ -25,6 +25,10 @@
   - NFAmmunitionBoxPistol45IncendiaryRecipe
   - NFAmmunitionBoxRifle30IncendiaryRecipe
   - NFAmmunitionBoxPistol35EmpRecipe
+  - NFAmmunitionBoxRifle25Recipe
+  - NFAmmunitionBoxRifle25UraniumRecipe
+  - NFAmmunitionBoxRifle25IncendiaryRecipe
+  - NFAmmunitionBoxRifle25RubberRecipe
   - GrenadeEMPRecipe
   - GrenadeFlashRecipe
   - GrenadeFragRecipe

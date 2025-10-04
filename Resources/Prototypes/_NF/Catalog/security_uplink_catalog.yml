@@ -1570,6 +1570,26 @@
   productEntity: WeaponCaseLongWeaponPulseCarbineSniper
   icon: { sprite: Forge/Objects/Weapons/Guns/Battery/pulse_sniper.rsi, state: icon }
   cost:
+    FrontierUplinkCoin: 32
+  categories:
+    - UplinkSecurityWeapons
+  conditions:
+    - !type:StoreWhitelistCondition
+      whitelist:
+        tags:
+          - SecurityUplink
+    - !type:BuyerJobCondition
+      whitelist:
+        - Bailiff
+        - Sheriff
+
+- type: listing
+  id: UplinkSecurityWeaponPulseCarbineCarbine
+  name: Импульсный карабин
+  description: Высокотехнологичный энергетический карабин, который предпочитают оперативные группы Nanotrasen. Запрещено к использованию гражданскими.
+  productEntity: WeaponCaseLongWeaponPulseCarbine
+  icon: { sprite: Objects/Weapons/Guns/Battery/pulse_carbine.rsi, state: icon }
+  cost:
     FrontierUplinkCoin: 20
   categories:
     - UplinkSecurityWeapons
@@ -1581,7 +1601,26 @@
     - !type:BuyerJobCondition
       whitelist:
         - Bailiff
-        - SeniorOfficer
+        - Sheriff
+
+- type: listing
+  id: UplinkSecurityWeaponPulseCarbinePistol
+  name: Иимпульсный пистолет
+  description: Новейший энергетический пистолет, предпочитаемый оперативными группами Nanotrasen в качестве запасного оружия. Запрещено к использованию гражданскими.
+  productEntity: WeaponCaseLongWeaponPulsePistol
+  icon: { sprite: Objects/Weapons/Guns/Battery/pulse_pistol.rsi, state: icon }
+  cost:
+    FrontierUplinkCoin: 12
+  categories:
+    - UplinkSecurityWeapons
+  conditions:
+    - !type:StoreWhitelistCondition
+      whitelist:
+        tags:
+          - SecurityUplink
+    - !type:BuyerJobCondition
+      whitelist:
+        - Bailiff
         - Sheriff
 
 - type: listing

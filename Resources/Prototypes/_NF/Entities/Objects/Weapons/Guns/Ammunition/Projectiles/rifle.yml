@@ -177,6 +177,18 @@
   - type: StaminaDamageOnCollide
     damage: 12 # ~9 hits to stun sounds reasonable, less effective than pistol because rifle round is smaller in size
 
+- type: entity
+  id: NFBulletRifle25Emp
+  name: bullet (.25 rifle, EMP)
+  parent: NFBaseBulletEmp
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Shock: 8
+        Blunt: 6
+
 #region .30 rifle
 - type: entity
   id: NFBulletRifle30
