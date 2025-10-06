@@ -464,24 +464,25 @@
   cost: 15000
   recipeUnlocks:
   - ClothingOuterHardsuitMaximPrototype
+  - ClothingOuterHardsuitMaxims # Corvax-Forge edit
   prerequisiteLineType: Tree
   technologyPrerequisites:
   - NFHardsuitsExperimentalRD
   - NFHardsuitsArmored
   position: 5, 8
 
-- type: technology
-  id: NFHardsuitsArmoredAdvanced
-  name: nf-research-technology-hardsuits-armored-advanced
-  entityIcon: ClothingOuterHardsuitScaf
-  discipline: NFArsenalMercenary
-  tier: 1
-  cost: 20000
-  recipeUnlocks:
-  - ClothingOuterHardsuitScaf
-  technologyPrerequisites:
-  - NFHardsuitsArmored
-  position: 5, 9
+# - type: technology
+#   id: NFHardsuitsArmoredAdvanced
+#   name: nf-research-technology-hardsuits-armored-advanced
+#   entityIcon: ClothingOuterHardsuitScaf
+#   discipline: NFArsenalMercenary
+#   tier: 1
+#   cost: 20000
+#   recipeUnlocks:
+#   - ClothingOuterHardsuitScaf
+#   technologyPrerequisites:
+#   - NFHardsuitsArmored
+#   position: 5, 9
 
 # region Medical
 
