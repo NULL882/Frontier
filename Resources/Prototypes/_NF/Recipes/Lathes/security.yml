@@ -256,10 +256,26 @@
 
 - type: latheRecipe
   parent: BaseAmmoRecipe
+  id: NFAmmunitionBoxRifle25Incendiary
+  result: NFAmmunitionBoxRifle25Incendiary
+  materials:
+    Plastic: 1200 # box - free, 60 [bullets] * 20 [Plastic per bullet]
+
+- type: latheRecipe
+  parent: BaseAmmoRecipe
+  id: NFAmmunitionBoxRifle25Uranium
+  result: NFAmmunitionBoxRifle25Uranium
+  materials:
+    Plastic: 600 # box - free, 60 [bullets] * 10 [Plastic per bullet]
+    Uranium: 600 # box - free, 60 [bullets] * 10 [Uranium per bullet]
+
+- type: latheRecipe
+  parent: BaseAmmoRecipe
   id: NFAmmunitionBoxBigRifle25
   result: NFAmmunitionBoxBigRifle25
   materials:
     Steel: 4000 # box - free, 200 [bullets] * 20 [Steel per bullet]
+
 - type: latheRecipe
   parent: BaseAmmoRecipe
   id: NFAmmunitionBoxBigRifle25Overpressure
