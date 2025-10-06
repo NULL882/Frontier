@@ -60,7 +60,7 @@
 
 - type: entity #FrontierCorvax
   name: Vector (.45 ACP)
-  parent: [ NFBaseWeaponPistolChamber45, BaseC1Contraband, NFBaseWeaponFrameSubMachineGunNanotrasen ]
+  parent: [ NFBaseWeaponRifleAssaultChamber20, BaseC1Contraband, NFBaseWeaponFrameSubMachineGunNanotrasen ]
   id: WeaponSubMachineGunVector45
   description: A legal civilian version of the already legendary and forgotten submachine gun. Uses caliber cartridges .45 ACP. Automatic fire is not included in the package.
   components:

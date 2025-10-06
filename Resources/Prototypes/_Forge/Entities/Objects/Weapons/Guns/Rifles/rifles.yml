@@ -67,7 +67,7 @@
 
 - type: entity
   name: Dakota
-  parent: [NFBaseWeaponRifleAssaultChamber30, BaseC2ContrabandUnredeemable, NFBaseWeaponFrameRifleAssaultNanotrasen]
+  parent: [NFBaseWeaponRifleAssaultChamber20, BaseC2ContrabandUnredeemable, NFBaseWeaponFrameRifleAssaultNanotrasen]
   id: WeaponInterstellarRifleM4A1
   components:
   - type: Sprite

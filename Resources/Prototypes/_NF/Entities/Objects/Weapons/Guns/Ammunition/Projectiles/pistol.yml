@@ -191,7 +191,7 @@
 
 # Corvax-Frontier
 - type: entity
-  id: NFCartridgePistol45BB
+  id: NFBulletPistol45AP
   name: bullet (.45 pistol, AP)
   parent: NFBaseBullet
   categories: [ HideSpawnMenu ]
