@@ -12,3 +12,5 @@ ent-NFAmmunitionBoxPistol45Rubber = коробка патронов (.45 маг�
     .desc = { ent-BaseMagazineBoxRifle.desc }
 ent-NFAmmunitionBoxPistol45EMP = коробка патронов (.45 магнум ЭМИ)
     .desc = { ent-BaseMagazineBoxRifle.desc }
+ent-NFAmmunitionBoxPistol45AP = коробка патронов (.45 магнум бронебойные)
+    .desc = { ent-BaseMagazineBoxRifle.desc }
