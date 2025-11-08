@@ -204,7 +204,7 @@
       amount: 1
     - id: NFMagazineSubMachineGunTopMounted35
       amount: 2
-    - id: NFAmmunitionBoxPistol35
+    - id: NFAmmunitionBoxRifle25
       amount: 1
 
 - type: entity
@@ -271,7 +271,7 @@
       amount: 1
     - id: NFMagazineBoxRifle20
       amount: 2
-    - id: NFAmmunitionBoxRifle30
+    - id: NFAmmunitionBoxRifle20
       amount: 1
 
 - type: entity
