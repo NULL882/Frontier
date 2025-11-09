@@ -1,3 +1,4 @@
+
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
@@ -11,7 +12,7 @@ public sealed partial class MechThrustersComponent : Component
     public bool ThrustersEnabled = false;
 
     [ViewVariables(VVAccess.ReadWrite), DataField("drawRate")]
-    public float DrawRate = 15f;
+    public float DrawRate = 1f; // Its broken, pls dont change :skull:
 
     [DataField("nextUpdate", customTypeSerializer: typeof(TimeOffsetSerializer))]
     [AutoPausedField]

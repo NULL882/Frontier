@@ -11,9 +11,6 @@
   #Forge-Change Mechs
   - MechAirTank
   - MechThruster
-  - PowerCageHigh
-  - PowerCageMedium
-  - PowerCageSmall
 
 - type: latheRecipePack
   id: BorgModulesStatic

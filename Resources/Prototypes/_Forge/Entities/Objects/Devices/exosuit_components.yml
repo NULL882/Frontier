@@ -109,8 +109,7 @@
     air:
       volume: 3000
       moles:
-        - 393.0592071
-        - 1478.6513029
+        - 2.051379050
       temperature: 293.15
 
 - type: entity

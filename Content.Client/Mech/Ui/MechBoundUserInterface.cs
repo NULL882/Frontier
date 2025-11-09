@@ -39,7 +39,7 @@ public sealed class MechBoundUserInterface : BoundUserInterface
             return;
         UpdateEquipmentControls(msg);
         _menu?.UpdateMechStats(msg.Equipment.Count); // Forge-Change
-        _menu?.UpdateEquipmentView(msg); // Forge-Change
+        _menu?.UpdateEquipmentView(msg.Equipment); // Forge-Change
     }
 
     public void UpdateEquipmentControls(MechBoundUiState state)
@@ -54,8 +54,7 @@ public sealed class MechBoundUserInterface : BoundUserInterface
                 continue;
             foreach (var (attached, estate) in state.EquipmentStates)
             {
-                if (ent == EntMan.GetEntity(attached) &&
-                    estate != null) // Forge-Change
+                if (ent == EntMan.GetEntity(attached))
                     ui.UpdateState(estate);
             }
         }
