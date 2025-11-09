@@ -122,14 +122,6 @@
   - HonkerTargetingElectronics
   - HamtrCentralElectronics
   - HamtrPeripheralsElectronics
-  - ClarkeCentralElectronics
-  - ClarkePeripheralsElectronics
-  - GygaxCentralElectronics
-  - GygaxPeripheralsElectronics
-  - GygaxTargetingElectronics
-  - DurandCentralElectronics
-  - DurandPeripheralsElectronics
-  - DurandTargetingElectronics
 
 - type: latheRecipePack
   id: ShuttleBoards

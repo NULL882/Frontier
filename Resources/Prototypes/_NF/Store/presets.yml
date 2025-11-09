@@ -34,7 +34,6 @@
     - UplinkSecurityUtility
     - UplinkSecurityExplosives
     - UplinkSecurityBundles
-    - UplinkSecurityMech
     currencyWhitelist:
     - FrontierUplinkCoin
     balance:

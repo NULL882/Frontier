@@ -8,9 +8,6 @@
   - SciFlash
   - CyborgEndoskeleton
   - Tyriumpack # Forge-Change wega android
-  #Forge-Change Mechs
-  - MechAirTank
-  - MechThruster
 
 - type: latheRecipePack
   id: BorgModulesStatic
@@ -65,27 +62,6 @@
   - HamtrLLeg
   - HamtrRLeg
   - VimHarness
-  # Forge-Change-Start
-  - ClarkeHarness
-  - ClarkeHead
-  - ClarkeLArm
-  - ClarkeRArm
-  - ClarkeTreads
-  - DurandHarness
-  - DurandArmor
-  - DurandHead
-  - DurandLArm
-  - DurandLLeg
-  - DurandRArm
-  - DurandRLeg
-  - GygaxHarness
-  - GygaxArmor
-  - GygaxHead
-  - GygaxLArm
-  - GygaxLLeg
-  - GygaxRArm
-  - GygaxRLeg
-  # Forge-Change-End
 
 - type: latheRecipePack
   id: MechEquipment
@@ -94,7 +70,3 @@
     - MechEquipmentHorn
     - MechEquipmentGrabberSmall
     - MechEquipmentFork # Frontier
-    - MechEquipmentHonkerBananaMortar # Forge-Change
-    - MechEquipmentHonkerMousetrapMortar # Forge-Change
-    - MechEquipmentDrill # Forge-Change
-    - MechEquipmentDrillDiamond # Forge-Change

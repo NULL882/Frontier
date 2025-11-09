@@ -806,7 +806,7 @@
   - HonkerTargetingElectronics
   technologyPrerequisites:
   - NFRipleyAPLU
-  position: 2, 17
+  position: 2, 16
 
 - type: technology
   id: NFHornRoboticsEquipment
@@ -819,7 +819,7 @@
   - MechEquipmentHorn
   technologyPrerequisites:
   - NFHONKMech
-  position: 2, 18
+  position: 2, 17
 
 # region Entertainment & Comms
 

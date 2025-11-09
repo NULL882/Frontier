@@ -10,36 +10,6 @@
 
 - type: latheRecipe
   abstract: true
-  id: BaseClarkeRecipeCategory
-  categories:
-  - Clarke
-
-- type: latheRecipe
-  abstract: true
-  id: BaseGygaxRecipeCategory
-  categories:
-  - Gygax
-
-- type: latheRecipe
-  abstract: true
-  id: BaseDurandRecipeCategory
-  categories:
-  - Durand
-
-- type: latheRecipe
-  abstract: true
-  id: BaseRipleyRecipeCategory
-  categories:
-  - Ripley
-
-- type: latheRecipe
-  abstract: true
-  id: BaseHonkerRecipeCategory
-  categories:
-  - Honker
-
-- type: latheRecipe
-  abstract: true
   id: BaseMechRecipeCategory
   categories:
   - Mech

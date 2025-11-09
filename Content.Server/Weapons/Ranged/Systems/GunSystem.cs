@@ -3,7 +3,6 @@ using System.Numerics;
 using Content.Server._Mono.FireControl; //Forge
 using Content.Server._NF.Radar;
 using Content.Server.Cargo.Systems;
-using Content.Server.Mech.Equipment.Components; // Forge-Change
 using Content.Server.Power.EntitySystems;
 using Content.Server.Weapons.Ranged.Components;
 using Content.Shared.Cargo;
@@ -11,7 +10,6 @@ using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Shared.Effects;
-using Content.Shared.Mech.Equipment.Components; // Forge-Change
 using Content.Shared.Projectiles;
 using Content.Shared.Weapons.Melee;
 using Content.Shared.Weapons.Ranged;

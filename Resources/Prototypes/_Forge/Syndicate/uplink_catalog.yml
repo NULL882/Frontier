@@ -2267,24 +2267,14 @@
   - UplinkWearablesSmugger
 
 - type: listing
-  id: SmuggerUplinkgMechGygaxSyndieFilled
-  name: uplink-security-mech-dgygax-name
-  description: uplink-security-mech-dgygax-desc
-  productEntity: MechGygaxSyndieFilled
+  id: SmuggerUplinkBackpackSyndicate
+  name: uplink-backpack-syndicate-name
+  description: uplink-backpack-syndicate-desc
+  productEntity: ClothingBackpackSyndicate
   cost:
-    TelecrystalDamaged: 200
+    TelecrystalDamaged: 4
   categories:
-  - UplinkWearablesSmugger
-
-- type: listing
-  id: SmuggerUplinkgMechMaulerSyndieFilled
-  name: uplink-security-mech-mauler-name
-  description: uplink-security-mech-mauler-desc
-  productEntity: MechMaulerSyndieFilled
-  cost:
-    TelecrystalDamaged: 300
-  categories:
-  - UplinkWearablesSmugger
+    - UplinkWearablesSmugger
 
  # Pointless
 

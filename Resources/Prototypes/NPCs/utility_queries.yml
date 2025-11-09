@@ -86,9 +86,8 @@
   query:
     - !type:NearbyHostilesQuery
   considerations:
-    # Forge-Change - check is dead instead so we can target non-living stuff
-    - !type:TargetIsDeadCon
-      curve: !type:InverseBoolCurve
+    - !type:TargetIsAliveCon
+      curve: !type:BoolCurve
     - !type:TargetDistanceCon
       curve: !type:PresetCurve
         preset: TargetDistance
@@ -126,9 +125,8 @@
   query:
     - !type:NearbyHostilesQuery
   considerations:
-    # Forge-Change - check is dead instead so we can target non-living stuff
-    - !type:TargetIsDeadCon
-      curve: !type:InverseBoolCurve
+    - !type:TargetIsAliveCon
+      curve: !type:BoolCurve
     - !type:TargetDistanceCon
       curve: !type:PresetCurve
         preset: TargetDistance
@@ -209,9 +207,8 @@
   query:
     - !type:NearbyHostilesQuery
   considerations:
-    # Forge-Change - check is dead instead so we can target non-living stuff
-    - !type:TargetIsDeadCon
-      curve: !type:InverseBoolCurve
+    - !type:TargetIsAliveCon
+      curve: !type:BoolCurve
     - !type:TargetIsCritCon
       curve: !type:InverseBoolCurve
     - !type:TargetIsStunnedCon
