@@ -141,8 +141,6 @@
     runningState: icon
     staticPacks:
     - NFSalvageTechfabDeprecatedStatic
-    dynamicPacks:
-    - NFSalvageTechfabDeprecatedDynamic
   - type: EmagLatheRecipes
     emagStaticPacks:
     - NFSalvageTechfabDeprecatedEmag

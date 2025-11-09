@@ -346,7 +346,7 @@
   result: MechGygaxSyndieBattery
   completetime: 1
   materials:
-    CreditCounterfeit: 249999
+    CreditCounterfeit: 250000
 
 - type: latheRecipe
   id: MechMaulerSyndieBatteryRecipe
@@ -354,7 +354,7 @@
   result: MechMaulerSyndieBattery
   completetime: 1
   materials:
-    CreditCounterfeit: 349999
+    CreditCounterfeit: 350000
 
 - type: latheRecipe
   id: GrenadeShrapnelRecipe

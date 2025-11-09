@@ -2275,11 +2275,6 @@
     TelecrystalDamaged: 200
   categories:
   - UplinkWearablesSmugger
-  conditions:
-    - !type:BuyerWhitelistCondition
-      blacklist:
-        components:
-          - SurplusBundle
 
 - type: listing
   id: SmuggerUplinkgMechMaulerSyndieFilled
@@ -2290,11 +2285,6 @@
     TelecrystalDamaged: 300
   categories:
   - UplinkWearablesSmugger
-  conditions:
-    - !type:BuyerWhitelistCondition
-      blacklist:
-        components:
-          - SurplusBundle
 
  # Pointless
 

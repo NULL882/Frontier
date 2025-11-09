@@ -38,8 +38,8 @@ public sealed class MechBoundUserInterface : BoundUserInterface
         if (state is not MechBoundUiState msg)
             return;
         UpdateEquipmentControls(msg);
-        _menu?.UpdateMechStats(msg.Equipment.Count); // Forge-Change
-        _menu?.UpdateEquipmentView(msg.Equipment); // Forge-Change
+        _menu?.UpdateMechStats();
+        _menu?.UpdateEquipmentView();
     }
 
     public void UpdateEquipmentControls(MechBoundUiState state)

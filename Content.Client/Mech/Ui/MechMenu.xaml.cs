@@ -29,7 +29,7 @@ public sealed partial class MechMenu : FancyWindow
         NameLine.Text = _ent.GetComponent<MetaDataComponent>(_mech).EntityName;
     }
 
-    public void UpdateMechStats(int EquipmentCount)
+    public void UpdateMechStats()
     {
         if (!_ent.TryGetComponent<MechComponent>(_mech, out var mechComp))
             return;
@@ -51,15 +51,17 @@ public sealed partial class MechMenu : FancyWindow
         }
 
         SlotDisplay.Text = Loc.GetString("mech-slot-display",
-            ("amount", mechComp.MaxEquipmentAmount - EquipmentCount));
+            ("amount", mechComp.MaxEquipmentAmount - mechComp.EquipmentContainer.ContainedEntities.Count));
     }
 
-    public void UpdateEquipmentView(List<NetEntity> Equipment)
+    public void UpdateEquipmentView()
     {
+        if (!_ent.TryGetComponent<MechComponent>(_mech, out var mechComp))
+            return;
+
         EquipmentControlContainer.Children.Clear();
-        foreach (var netEntity in Equipment) // Forge-Change
+        foreach (var ent in mechComp.EquipmentContainer.ContainedEntities)
         {
-            var ent = _ent.GetEntity(netEntity); // Forge-Change
             if (!_ent.TryGetComponent<MetaDataComponent>(ent, out var metaData))
                 continue;
 

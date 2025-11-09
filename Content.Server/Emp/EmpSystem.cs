@@ -6,7 +6,6 @@ using Content.Server.Power.EntitySystems;
 using Content.Server.Radio;
 using Content.Server.Station.Components;
 using Content.Server.SurveillanceCamera;
-using Content.Shared._Forge.Emp;
 using Content.Shared.Emp;
 using Content.Shared.Examine;
 using Content.Shared.Tiles; // Frontier
@@ -109,9 +108,6 @@ public sealed class EmpSystem : SharedEmpSystem
     /// <param name="duration">The duration of the EMP effects.</param>
     public void TryEmpEffects(EntityUid uid, float energyConsumption, float duration)
     {
-        if (HasComp<EmpProtectionComponent>(uid))
-            return;
-
         var attemptEv = new EmpAttemptEvent();
         RaiseLocalEvent(uid, attemptEv);
         if (attemptEv.Cancelled)
