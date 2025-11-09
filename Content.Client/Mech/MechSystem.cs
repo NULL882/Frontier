@@ -41,7 +41,7 @@ public sealed class MechSystem : SharedMechSystem
             drawDepth = DrawDepth.SmallMobs;
         }
 
-        layer.SetState(state);
-        args.Sprite.DrawDepth = (int) drawDepth;
+        _sprite.LayerSetRsiState((uid, args.Sprite), MechVisualLayers.Base, state);
+        _sprite.SetDrawDepth((uid, args.Sprite), (int)drawDepth);
     }
 }
