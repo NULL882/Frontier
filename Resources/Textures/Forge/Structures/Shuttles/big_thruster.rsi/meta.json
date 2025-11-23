@@ -28,6 +28,9 @@
       "name": "iconbigsyndi"
     },
     {
+      "name": "iconbigcentcom"
+    },
+    {
       "name": "thrust",
       "directions": 4
     },
@@ -37,6 +40,10 @@
     },
     {
       "name": "bigsyndi",
+      "directions": 4
+    },
+    {
+      "name": "bigcentcom",
       "directions": 4
     },
     {

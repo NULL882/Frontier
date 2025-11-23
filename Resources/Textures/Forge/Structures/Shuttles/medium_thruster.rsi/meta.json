@@ -20,6 +20,10 @@
       "directions": 4
     },
     {
+      "name": "mediumcentcom",
+      "directions": 4
+    },
+    {
       "name": "mediumsyndi",
       "directions": 4
     },
@@ -41,6 +45,9 @@
     },
     {
       "name": "iconmediumsyndi"
+    },
+    {
+      "name": "iconmediumcentcom"
     },
     {
       "name": "thrust",

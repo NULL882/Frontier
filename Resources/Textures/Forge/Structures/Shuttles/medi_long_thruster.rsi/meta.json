@@ -24,6 +24,10 @@
       "directions": 4
     },
     {
+      "name": "medicentcom",
+      "directions": 4
+    },
+    {
       "name": "medirenegat",
       "directions": 4
     },
@@ -41,6 +45,9 @@
     },
     {
       "name": "iconmedisyndi"
+    },
+    {
+      "name": "iconmedicentcom"
     },
     {
       "name": "thrust",
