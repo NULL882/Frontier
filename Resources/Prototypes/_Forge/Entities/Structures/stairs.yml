@@ -135,3 +135,11 @@
     sprite: Forge/Structures/stairs.rsi
     state: stairs_stone
     drawdepth: FloorTiles
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepCatwalk
+      params:
+        volume: 8
+  - type: Tag
+    tags:
+      - Catwalk

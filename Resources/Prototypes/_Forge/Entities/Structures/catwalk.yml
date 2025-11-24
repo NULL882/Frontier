@@ -48,3 +48,29 @@
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
   - type: TrayScanReveal
+
+- type: entity
+  id: CatwalkSteelTile
+  parent: CatwalkDarkTile
+  name: мостик
+  description: Мостик закрывающий техническое пространство под плиткой.
+  components:
+  - type: Sprite
+    sprite: Forge/Structures/Catwalk/steeltile.rsi
+    drawdepth: FloorTiles
+  - type: Icon
+    sprite: Forge/Structures/Catwalk/steeltile.rsi
+    state: catwalk_preview
+
+- type: entity
+  id: CatwalkWhiteTile
+  parent: CatwalkDarkTile
+  name: мостик
+  description: Мостик закрывающий техническое пространство под плиткой.
+  components:
+  - type: Sprite
+    sprite: Forge/Structures/Catwalk/whitetile.rsi
+    drawdepth: FloorTiles
+  - type: Icon
+    sprite: Forge/Structures/Catwalk/whitetile.rsi
+    state: catwalk_preview
