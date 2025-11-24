@@ -9,7 +9,7 @@
   - type: Item
     heldPrefix: blue
   - type: IdCard
-    jobTitle: адмирал УСФ
+    jobTitle: job-title-msf-admiral
     jobIcon: JobIconAdmin
   - type: Access
     groups:
@@ -34,7 +34,7 @@
   - type: Item
     heldPrefix: blue
   - type: IdCard
-    jobTitle: офицер спец. операций
+    jobTitle: job-title-msf-specops-officer
     jobIcon: JobIconNanotrasen
   - type: Access
     groups:
@@ -54,7 +54,7 @@
   - type: Item
     heldPrefix: blue
   - type: IdCard
-    jobTitle: оператор УСФ
+    jobTitle: job-title-msf-operator
     jobIcon: JobIconNanotrasen
   - type: Access
     groups:
@@ -74,7 +74,7 @@
   - type: Item
     heldPrefix: blue
   - type: IdCard
-    jobTitle: представитель флота
+    jobTitle: job-title-msf-rep
     jobIcon: JobIconNanotrasen
   - type: Access
     groups:
