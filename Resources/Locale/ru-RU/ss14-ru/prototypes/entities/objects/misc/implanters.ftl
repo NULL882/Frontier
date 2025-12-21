@@ -65,5 +65,5 @@ ent-RadioImplanter = { ent-BaseImplantOnlyImplanterSyndi }
     .suffix = радио Синдикат
     .desc = { ent-BaseImplantOnlyImplanterSyndi.desc }
 ent-RadioImplanterCentcomm = { ent-BaseImplantOnlyImplanter }
-    .suffix = радио Центком
+    .suffix = радио УСФ
     .desc = { ent-BaseImplantOnlyImplanter.desc }
