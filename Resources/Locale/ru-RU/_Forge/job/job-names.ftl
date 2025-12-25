@@ -17,3 +17,6 @@ job-title-msf-admiral = адмирал Флота
 job-title-msf-specops-officer = офицер спец. операций
 job-title-msf-operator = оператор УСФ
 job-title-msf-rep = представитель флота
+
+# Nfsd
+forge-job-name-engineernfsd = Специалист
