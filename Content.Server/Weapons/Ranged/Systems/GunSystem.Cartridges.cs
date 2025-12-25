@@ -15,7 +15,6 @@ public sealed partial class GunSystem
         base.InitializeCartridge();
         SubscribeLocalEvent<CartridgeAmmoComponent, ExaminedEvent>(OnCartridgeExamine);
         SubscribeLocalEvent<CartridgeAmmoComponent, DamageExamineEvent>(OnCartridgeDamageExamine);
-        SubscribeLocalEvent<BasicEntityAmmoProviderComponent, DamageExamineEvent>(OnBasicEntityDamageExamine); // Forge
     }
 
     private void OnCartridgeDamageExamine(EntityUid uid, CartridgeAmmoComponent component, ref DamageExamineEvent args)
@@ -26,6 +25,13 @@ public sealed partial class GunSystem
             return;
 
         _damageExamine.AddDamageExamine(args.Message, Damageable.ApplyUniversalAllModifiers(damageSpec), Loc.GetString("damage-projectile"));
+
+        var ap = GetProjectilePenetration(component.Prototype);
+        if (ap == 0)
+            return;
+
+        var abs = Math.Abs(ap);
+        args.Message.AddMarkupPermissive("\n" + Loc.GetString("armor-penetration", ("arg", ap/abs), ("abs", abs)));
     }
 
     private DamageSpecifier? GetProjectileDamage(string proto)
@@ -79,6 +85,7 @@ public sealed partial class GunSystem
         var abs = Math.Abs(ap);
         args.Message.AddMarkupPermissive("\n" + Loc.GetString("armor-penetration", ("arg", ap/abs), ("abs", abs)));
     }
+
     private int GetProjectilePenetration(string proto)
     {
         if (!ProtoManager.TryIndex<EntityPrototype>(proto, out var entityProto)

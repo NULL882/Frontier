@@ -276,6 +276,7 @@
       types:
         Heat: 16
         Radiation: 4
+      armorPenetration: 0.2
 
 - type: entity
   id: BulletLaserSyndie
@@ -288,6 +289,7 @@
       types:
         Heat: 11
         Radiation: 3
+      armorPenetration: 0.15
 
 - type: entity
   id: WeaponSyndieEnergyFalconPistolLaser

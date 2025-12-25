@@ -10,6 +10,7 @@
     damage:
       types:
         Heat: 9 # Corvax-Forge: Weaponary update
+      armorPenetration: 0.1 # Forge-Change
 
 - type: entity
   id: NFBulletLaserLowMed # Corvax-Forge: Weaponary update
@@ -21,6 +22,7 @@
     damage:
       types:
         Heat: 11
+      armorPenetration: 0.15 # Forge-Change
 
 # Assault Rifles / Carbines
 - type: entity
@@ -50,6 +52,7 @@
     damage:
       types:
         Heat: 12
+      armorPenetration: 0.2 # Forge-Change
 
 # Rifles
 - type: entity
@@ -62,6 +65,7 @@
     damage:
       types:
         Heat: 14
+      armorPenetration: 0.25 # Forge-Change
 
 #region Disabler bolts
 - type: entity

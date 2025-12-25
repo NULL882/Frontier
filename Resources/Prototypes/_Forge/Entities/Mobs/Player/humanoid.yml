@@ -331,7 +331,7 @@
     id: DeathsquadPDA
     pocket1: EnergySwordBlue
     pocket2: EnergyShieldAdvanced
-    belt: ClothingBeltMilitaryWebbingMed
+    belt: ClothingBeltMilitaryWebbingMedExpResist
     wallet: ClothingWalletLeatherBlack
   storage:
     back:
@@ -676,11 +676,11 @@
     shoes: ClothingShoesBootsMagCombatERT
     mask: ClothingMaskGasERT
     eyes: ClothingEyesGlassesCentComm
-    gloves: ClothingHandsGlovesNitrile
+    gloves: ClothingHandsGlovesLatexSurgeon
     outerClothing: ClothingOuterHardsuitERTMedical
     id: ERTMedicPDA
     ears: ClothingHeadsetAltCentCom
-    belt: ClothingBeltMilitaryWebbingMed
+    belt: ClothingBeltMilitaryWebbingMedExpResist
     pocket1: EnergySwordBlue
     wallet: ClothingWalletLeatherBlack
   storage:
@@ -690,6 +690,7 @@
       - CrowbarRed
       - NFWeaponEnergyPistolPulse
     belt:
+      - DefibrillatorCompact
       - CentCommHypo
       - ChemistryBottleEpinephrine
       - ChemistryBottleEpinephrine
@@ -698,9 +699,6 @@
       - ChemistryBottleEphedrine
       - ChemistryBottleOmnizine
       - ChemistryBottleOmnizine
-      - Syringe
-      - Syringe
-      - Syringe
   inhand:
     - NFWeaponEnergyRifleAssaultPulseCarbine
 ## CBURN

@@ -186,6 +186,7 @@
         Piercing: 20
         Blunt: 10
         Structural: 25
+      armorPenetration: 0.2 # Forge-Change
 
 - type: entity
   categories: [ HideSpawnMenu ]
