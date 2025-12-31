@@ -415,7 +415,7 @@
     wallet: ClothingWalletLeatherBlack
   storage:
     back:
-    - MedkitCombatFilled
+    - MedkitMilitaryFilled
     - NFMagazinePistol45
     - NFWeaponEnergyPistolDisabler
     - JawsOfLife
@@ -483,7 +483,7 @@
     wallet: ClothingWalletLeatherBlack
   storage:
     back:
-      - MedkitCombatFilled
+      - MedkitMilitaryFilled
       - BoxLightMixed
       - BoxLightMixed
       - LightReplacer
@@ -550,7 +550,7 @@
     wallet: ClothingWalletLeatherBlack
   storage:
     back:
-      - MedkitCombatFilled
+      - MedkitMilitaryFilled
       - trayScanner
       - RCD
       - RCDAmmo
@@ -621,7 +621,7 @@
     wallet: ClothingWalletLeatherBlack
   storage:
     back:
-      - MedkitCombatFilled
+      - MedkitMilitaryFilled
       - CrowbarRed
       - NFWeaponEnergyPistolPulse
   inhand:
@@ -685,8 +685,8 @@
     wallet: ClothingWalletLeatherBlack
   storage:
     back:
-      - MedkitCombatFilled
-      - MedkitCombatFilled
+      - MedkitMilitaryFilled
+      - MedkitMilitaryFilled
       - CrowbarRed
       - NFWeaponEnergyPistolPulse
     belt:
@@ -768,7 +768,7 @@
       - NFAmmunitionBoxShellShotgunIncendiary
       - NFAmmunitionBoxShellShotgunIncendiary
       - NFAmmunitionBoxShellShotgunIncendiary
-      - MedkitCombatFilled
+      - MedkitMilitaryFilled
       - GrenadeFlashBang
       - PillAmbuzolPlus
       - PillAmbuzol
@@ -829,7 +829,7 @@
     wallet: ClothingWalletLeatherBlack
   storage:
     back:
-      - MedkitCombatFilled
+      - MedkitMilitaryFilled
       - CrowbarRed
 
 
