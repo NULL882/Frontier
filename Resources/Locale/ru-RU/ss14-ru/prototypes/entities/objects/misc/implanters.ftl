@@ -67,3 +67,8 @@ ent-RadioImplanter = { ent-BaseImplantOnlyImplanterSyndi }
 ent-RadioImplanterCentcomm = { ent-BaseImplantOnlyImplanter }
     .suffix = радио УСФ
     .desc = { ent-BaseImplantOnlyImplanter.desc }
+
+# Forge-Frontier
+ent-OverlordImplanter = { ent-Implanter }
+    .desc = { ent-BaseImplantOnlyImplanter.desc }
+    .suffix = Оверлорд
