@@ -162,6 +162,7 @@
     damage:
       types:
         Slash: 30
+      armorPenetration: 0.25 # Forge-Change
   - type: Item
     storedSprite:
       state: storage

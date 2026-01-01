@@ -9,7 +9,7 @@
     impactEffect: BulletImpactEffectOrangeDisabler
     damage:
       types:
-        Heat: 9 # Corvax-Forge: Weaponary update
+        Heat: 13.5 # Corvax-Forge: Weaponary update
       armorPenetration: 0.1 # Forge-Change
 
 - type: entity
@@ -21,7 +21,7 @@
     impactEffect: BulletImpactEffectOrangeDisabler
     damage:
       types:
-        Heat: 11
+        Heat: 16.5 # Corvax-Forge: Weaponary update
       armorPenetration: 0.15 # Forge-Change
 
 # Assault Rifles / Carbines
@@ -51,7 +51,7 @@
     impactEffect: BulletImpactEffectOrangeDisabler
     damage:
       types:
-        Heat: 12
+        Heat: 18 # Corvax-Forge: Weaponary update
       armorPenetration: 0.2 # Forge-Change
 
 # Rifles
@@ -64,7 +64,7 @@
     impactEffect: BulletImpactEffectOrangeDisabler
     damage:
       types:
-        Heat: 14
+        Heat: 21 # Corvax-Forge: Weaponary update
       armorPenetration: 0.25 # Forge-Change
 
 #region Disabler bolts
