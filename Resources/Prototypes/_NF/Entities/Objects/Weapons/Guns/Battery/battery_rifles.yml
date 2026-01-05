@@ -17,6 +17,8 @@
     projectileSpeed: 45
   - type: StaticPrice
     price: 560
+  - type: MercenaryBountyItem # Corvax-Frontier
+    id: NFWeaponEnergyRifleCarbine
 
 - type: entity
   id: NFWeaponEnergyRifleCarbinePractice
@@ -46,6 +48,8 @@
   - type: Battery # 30 shots
     maxCharge: 3000
     startingCharge: 3000
+  - type: MercenaryBountyItem # Corvax-Frontier
+    id: NFWeaponEnergyRifleCarbine
 
 #region Other
 - type: entity
@@ -158,3 +162,5 @@
     zeroVisible: false
   - type: NFWeaponDetails
     manufacturer: weapon-details-manufacturer-custom-made
+  - type: MercenaryBountyItem # Corvax-Frontier
+    id: NFWeaponEnergyRifleCarbine

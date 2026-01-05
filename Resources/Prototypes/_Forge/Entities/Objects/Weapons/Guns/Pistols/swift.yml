@@ -33,3 +33,5 @@
     radius: 4.5
     softness: 5
     autoRot: true
+  - type: PirateBountyItem
+    id: FTechLogisticGuns

@@ -11009,7 +11009,7 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 14.5,0.5
       parent: 1
-- proto: CryogenicSleepUnit
+- proto: MachineCryoSleepPod
   entities:
   - uid: 1410
     components:
@@ -18797,22 +18797,11 @@ entities:
 - proto: Multitool
   entities:
   - uid: 2496
-    mapInit: true
-    paused: true
     components:
     - type: Transform
       rot: 0.2792526803190927 rad
       pos: 10.729698,16.696297
       parent: 1
-    - type: NetworkConfigurator
-      lastUseAttempt: -12.4333209
-      devices:
-        'UID: 435313': 2172
-        'UID: 435272': 2130
-        'UID: 435320': 2178
-        'UID: 435288': 2145
-    - type: EmitSoundOnCollide
-      nextSound: -104066.9292663
 - proto: NFAmmunitionBoxBigRifle20Practice
   entities:
   - uid: 2497

@@ -151,6 +151,8 @@
   - type: NFWeaponDetails
     class: weapon-details-class-shotgun
     manufacturer: weapon-details-manufacturer-TechnicLogistic
+  - type: PirateBountyItem
+    id: FTechLogisticGuns
 
 - type: entity
   name: Suppressor
@@ -243,3 +245,5 @@
   - type: NFWeaponDetails
     class: weapon-details-class-shotgun
     manufacturer: weapon-details-manufacturer-TechnicLogistic
+  - type: PirateBountyItem
+    id: FTechLogisticGuns

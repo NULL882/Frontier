@@ -234,9 +234,8 @@
   name: alerts-magboots-name
   description: alerts-m
 
-
 - type: entity
-  parent: [ClothingShoesBootsMag, BaseC1Contraband] #Corvax-Frontier КБ
+  parent: [ClothingShoesBootsMag, BaseForgeMedicContraband]
   id: ClothingShoesBootsMagParamed
   name: Paramedic magboots
   components:
@@ -252,7 +251,6 @@
     sprintModifier: 0.9
   - type: ClothingSlowOnDamageModifier
     modifier: 0.3
-
 
 - type: alert
   id: MagbootsParamed
